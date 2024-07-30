@@ -1,0 +1,43 @@
+.uploaded-files-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.uploaded-files-table th,
+.uploaded-files-table td {
+  padding: 8px;
+  /* border: 1px solid #ddd; */
+}
+
+.uploaded-files-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.uploaded-files-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* .uploaded-files-table tbody tr:hover {
+  background-color: #ddd;
+} */
+
+.technology-select {
+  padding: 8px;
+  margin: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #fff;
+  width:99%;
+}
+
+/* Remove hover effects for select element */
+.technology-select:hover {
+background-color: initial;
+color: initial;
+}
+
+
+
+

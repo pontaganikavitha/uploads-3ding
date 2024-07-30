@@ -1,0 +1,16 @@
+/* For desktop view */
+.file-uploader-container {
+  max-width: 100%;
+  margin: 0 auto; /* Center the uploader horizontally */
+  padding: 20px;
+}
+
+/* For mobile view */
+@media (max-width: 768px) {
+  .file-uploader-container {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+}
+
+  /* Add any additional responsive styles as needed */
+  
