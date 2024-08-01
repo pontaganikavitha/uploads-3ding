@@ -1,25 +1,13 @@
+const mongoose = require('mongoose');
+
 const orderSchema = new mongoose.Schema({
   orderId: String,
   session: String,
-  files: [
-    {
-      name: String,
-      size: Number,
-      type: String,
-      buildVolume: Number,
-      url: String,
-      options: {
-        technology: String,
-        material: String,
-        color: String,
-        quality: String,
-        density: String,
-        quantity: Number
-      }
-    }
-  ],
+  files: Array,
   subtotal: Number,
   gst: Number,
   shippingCharges: Number,
-  total: Number
+  total: Number,
 });
+
+module.exports = mongoose.model('Order', orderSchema);
