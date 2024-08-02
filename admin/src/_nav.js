@@ -107,11 +107,11 @@ const _nav = [
         name: 'Progress',
         to: '/base/progress',
       },
-      {
-        component: CNavItem,
-        name: 'Spinners',
-        to: '/base/spinners',
-      },
+      // {
+      //   component: CNavItem,
+      //   name: 'OrderDetails',
+      //   to: '/base/oders',
+      // },
       {
         component: CNavItem,
         name: 'Tables',
