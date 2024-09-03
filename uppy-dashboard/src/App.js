@@ -23,6 +23,7 @@ import Home from './components/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import OrderDetails from './components/OrderDetails';
 // import UploadingFilesWithOrderid from './components/UploadingFilesWithOrderid';
+import UploadToExistingOrder from './components/UploadToExistingOrder';
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/" element={<Home />} /> {/* Default route */}
           <Route path="/upload" element={<UploadedFiles />} />
           {/* <Route path="/upload-with-same-oreder-id" element={<UploadingFilesWithOrderid />} /> */}
+          <Route path="/upload-with-same-oreder-id" element={<UploadToExistingOrder />} />
           <Route path="/summary" element={<Summary />} />
           <Route path="/summary/:orderId" element={<OrderDetails />} />
         </Routes>
