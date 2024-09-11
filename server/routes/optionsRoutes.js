@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const optionsData = {
+            
             technologyOptions: {
                 'SLS': {
                     material: ['Nylon 2200'],
