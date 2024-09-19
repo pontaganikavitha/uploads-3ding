@@ -19,7 +19,7 @@ const UploadedFiles = () => {
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
-        const response = await fetch('http://ec2-13-239-3-234.ap-southeast-2.compute.amazonaws.com:3001/options');
+        const response = await fetch('http://localhost:3001/options');
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -42,7 +42,7 @@ const UploadedFiles = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch(`http://ec2-13-239-3-234.ap-southeast-2.compute.amazonaws.com:3001/files/${session}`);
+      const response = await fetch(`http://localhost:3001/files/${session}`);
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -161,7 +161,7 @@ const UploadedFiles = () => {
         total
       };
 
-      const response = await fetch('http://ec2-13-239-3-234.ap-southeast-2.compute.amazonaws.com:3001/submit-order', {
+      const response = await fetch('http://localhost:3001/submit-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
