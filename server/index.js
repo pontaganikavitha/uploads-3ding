@@ -455,7 +455,6 @@ app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/myy-uploads');
-// mongoose.connect('mongodb://localhost:27017/myy-uploads');
 
 // Define Schema for uploaded files
 const fileSchema = new mongoose.Schema({
