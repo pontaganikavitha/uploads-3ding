@@ -22,22 +22,28 @@
   background-color: #ddd;
 } */
 
-.technology-select {
+.technology-select,
+.material-select,
+.color-select,
+.quantity-select,
+.quality-select,
+.density-select {
   padding: 8px;
   margin: 4px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
   background-color: #fff;
-  width:99%;
+  width: 99%;
 }
 
 /* Remove hover effects for select element */
-.technology-select:hover {
-background-color: initial;
-color: initial;
+.technology-select:hover,
+.material-select:hover,
+.color-select:hover,
+.quantity-select:hover,
+.quality-select:hover,
+.density-select:hover {
+  background-color: initial;
+  color: initial;
 }
-
-
-
-
