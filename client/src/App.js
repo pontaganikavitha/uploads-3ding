@@ -31,11 +31,11 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<Home />} /> {/* Default route */}
-          <Route path="/upload" element={<UploadedFiles />} />
+          <Route path="/upload-test" element={<UploadedFiles />} />
           {/* <Route path="/upload-with-same-oreder-id" element={<UploadingFilesWithOrderid />} /> */}
           <Route path="/upload-with-same-oreder-id" element={<UploadToExistingOrder />} />
-          <Route path="/summary" element={<Summary />} />
-          <Route path="/summary/:orderId" element={<OrderDetails />} />
+          <Route path="/summary-test" element={<Summary />} />
+          <Route path="/summary-test/:orderId" element={<OrderDetails />} />
         </Routes>
       </div>
     </Router>

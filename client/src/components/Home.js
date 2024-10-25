@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 
 class Home extends Component {
   render() {
-    return <Navigate to="/upload" />;
+    return <Navigate to="/upload-test" />;
   }
 }
 
