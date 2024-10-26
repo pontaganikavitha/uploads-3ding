@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const socket = io('https://www.3ding.in/uploading-test/server');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -36,7 +36,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+      const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -52,7 +52,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/options');
+      const response = await fetch('https://www.3ding.in/uploading-test/server/options');
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {
@@ -152,7 +152,7 @@ const OrderDetails = () => {
 
   //     const updatedOrder = { ...order, files: updatedFiles };
 
-  //     const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
+  //     const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`, {
   //       method: 'PUT',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -179,17 +179,17 @@ const OrderDetails = () => {
         itemTotal: fileOptions[file._id]?.itemTotal || 0,
         customPrice: customPrices[file._id], // Ensure custom price is sent to the server
       }));
-  
+
       const updatedOrder = { ...order, files: updatedFiles };
-  
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
+
+      const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedOrder),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log('Order updated successfully');
@@ -201,7 +201,7 @@ const OrderDetails = () => {
       console.error('Error updating order:', error);
     }
   };
-  
+
 
   const calculatePrice = (material, density, quality, buildVolume) => {
     const materialCost = optionsData.materialCosts[material] || 0;

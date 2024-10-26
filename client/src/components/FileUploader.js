@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import Uppy from '@uppy/core';
-import Dashboard from '@uppy/dashboard';
-import Tus from '@uppy/tus';
-import '@uppy/core/dist/style.css';
-import '@uppy/dashboard/dist/style.css';
+// import React, { useEffect } from 'react';
+// import Uppy from '@uppy/core';
+// import Dashboard from '@uppy/dashboard';
+// import Tus from '@uppy/tus';
+// import '@uppy/core/dist/style.css';
+// import '@uppy/dashboard/dist/style.css';
 
 // const FileUploader = ({ session, orderId, onComplete }) => {
 //   useEffect(() => {
@@ -16,7 +16,7 @@ import '@uppy/dashboard/dist/style.css';
 //         maxTotalFileSize: null,
 //         maxNumberOfFiles: null,
 //         minNumberOfFiles: null,
-//         allowedFileTypes: ['.stl', '.step'] // Only allow STL and STEP files
+//         allowedFileTypes: ['.stl', '.step']
 //       }
 //     })
 //       .use(Dashboard, {
@@ -24,9 +24,7 @@ import '@uppy/dashboard/dist/style.css';
 //         target: '#dashboard-container',
 //         showProgressDetails: true,
 //         proudlyDisplayPoweredByUppy: false,
-//         metaFields: [
-//           { id: 'name', name: 'Name', placeholder: 'file name' },
-//         ],
+//         metaFields: [{ id: 'name', name: 'Name', placeholder: 'file name' }],
 //       })
 //       .use(Tus, { endpoint: 'https://tusd.tusdemo.net/files/', limit: 6 });
 
@@ -60,6 +58,16 @@ import '@uppy/dashboard/dist/style.css';
 //   return <div id="dashboard-container"></div>;
 // };
 
+// export default FileUploader;
+
+
+import React, { useEffect } from 'react';
+import Uppy from '@uppy/core';
+import Dashboard from '@uppy/dashboard';
+import Tus from '@uppy/tus';
+import '@uppy/core/dist/style.css';
+import '@uppy/dashboard/dist/style.css';
+
 const FileUploader = ({ session, orderId, onComplete }) => {
   useEffect(() => {
     const uppy = new Uppy({
@@ -71,8 +79,8 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         maxTotalFileSize: null,
         maxNumberOfFiles: null,
         minNumberOfFiles: null,
-        allowedFileTypes: ['.stl', '.step']
-      }
+        allowedFileTypes: ['.stl', '.step'],
+      },
     })
       .use(Dashboard, {
         inline: true,
@@ -94,7 +102,8 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         formData.append('orderId', orderId);
 
         try {
-          await fetch('http://localhost:3001/upload', {
+          // Change localhost to your live backend URL
+          await fetch('https://www.3ding.in/uploading-test/server/upload', { // Update this line
             method: 'POST',
             body: formData,
           });
@@ -114,5 +123,3 @@ const FileUploader = ({ session, orderId, onComplete }) => {
 };
 
 export default FileUploader;
-
-

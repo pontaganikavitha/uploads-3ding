@@ -1,265 +1,10 @@
-// import React, { useEffect, useState, useCallback } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { io } from 'socket.io-client';
-// import { debounce } from 'lodash';
-// import '../styles/UploadedFiles.css';
-
-// const socket = io('http://localhost:3001');
-
-// const OrderDetails = () => {
-//   const { orderId } = useParams();
-//   const [order, setOrder] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [optionsData, setOptionsData] = useState({
-//     technologyOptions: {},
-//     materialCosts: {},
-//     densityCosts: {},
-//     qualityCosts: {},
-//   });
-//   const [fileOptions, setFileOptions] = useState({});
-//   const [customPrices, setCustomPrices] = useState({});
-
-//   useEffect(() => {
-//     fetchOrderDetails();
-//     fetchOptionsData();
-
-//     socket.on('orderUpdated', ({ orderId: updatedOrderId, updatedOrder }) => {
-//       if (updatedOrderId === orderId) {
-//         setOrder(updatedOrder);
-//         initializeFileOptions(updatedOrder);
-//       }
-//     });
-
-//     return () => {
-//       socket.off('orderUpdated');
-//     };
-//   }, [orderId]);
-
-//   const debouncedUpdateOrder = useCallback(debounce(async (updatedOrder) => {
-//     try {
-//       const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(updatedOrder),
-//       });
-
-//       if (response.ok) {
-//         console.log('Order updated successfully');
-//         setOrder(updatedOrder);
-//       } else {
-//         console.error('Error updating order');
-//       }
-//     } catch (error) {
-//       console.error('Error updating order:', error);
-//     }
-//   }, 500), [orderId]);
-
-//   useEffect(() => {
-//     if (order) {
-//       const updatedFiles = order.files.map((file) => ({
-//         ...file,
-//         options: fileOptions[file._id],
-//         itemTotal: calculateItemTotal(
-//           fileOptions[file._id]?.material || 'PLA',
-//           fileOptions[file._id]?.density || '20%',
-//           fileOptions[file._id]?.quality || 'Draft',
-//           file.buildVolume,
-//           fileOptions[file._id]?.quantity || 1,
-//           customPrices[file._id] || 0
-//         ),
-//         customPrice: customPrices[file._id] || 0,
-//       }));
-
-//       const updatedOrder = { ...order, files: updatedFiles };
-//       debouncedUpdateOrder(updatedOrder);
-//     }
-//   }, [fileOptions, customPrices, debouncedUpdateOrder, order]);
-
-//   const fetchOrderDetails = async () => {
-//     try {
-//       const response = await fetch(`http://localhost:3001/orders/${orderId}`);
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-//       const data = await response.json();
-//       setOrder(data);
-//       initializeFileOptions(data);
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const fetchOptionsData = async () => {
-//     try {
-//       const response = await fetch('http://localhost:3001/options');
-//       const data = await response.json();
-//       setOptionsData(data);
-//     } catch (error) {
-//       console.error('Error fetching options data:', error);
-//     }
-//   };
-
-//   const initializeFileOptions = (orderData) => {
-//     const initialFileOptions = {};
-//     const initialCustomPrices = {};
-
-//     orderData.files.forEach((file) => {
-//       initialFileOptions[file._id] = {
-//         technology: file.options?.technology || 'FDM/FFF',
-//         material: file.options?.material || 'PLA',
-//         color: file.options?.color || '',
-//         quality: file.options?.quality || 'Draft',
-//         density: file.options?.density || '20%',
-//         quantity: file.options?.quantity || 1,
-//         customPrice: file.customPrice || 0,
-//         itemTotal: calculateItemTotal(
-//           file.options?.material || 'PLA',
-//           file.options?.density || '20%',
-//           file.options?.quality || 'Draft',
-//           file.buildVolume,
-//           file.options?.quantity || 1,
-//           file.customPrice || 0
-//         ),
-//       };
-
-//       initialCustomPrices[file._id] = file.customPrice || 0;
-//     });
-
-//     setFileOptions(initialFileOptions);
-//     setCustomPrices(initialCustomPrices);
-//   };
-
-//   const handleOptionChange = (fileId, optionType, value) => {
-//     setFileOptions((prevState) => {
-//       const updatedOptions = { ...prevState[fileId], [optionType]: value };
-
-//       if (optionType === 'technology') {
-//         const newTechnologyOptions = optionsData.technologyOptions[value];
-//         updatedOptions.material = newTechnologyOptions.material[0] || '';
-//         updatedOptions.color = newTechnologyOptions.color[0] || '';
-//         updatedOptions.quality = newTechnologyOptions.quality[0] || '';
-//         updatedOptions.density = newTechnologyOptions.density[0] || '';
-//       }
-
-//       if (optionType === 'quantity' && updatedOptions.quantity < 1) {
-//         updatedOptions.quantity = 1;
-//       }
-
-//       const updatedItemTotal = calculateItemTotal(
-//         updatedOptions.material || 'PLA',
-//         updatedOptions.density || '20%',
-//         updatedOptions.quality || 'Draft',
-//         order.files.find((file) => file._id === fileId).buildVolume,
-//         updatedOptions.quantity || 1,
-//         customPrices[fileId]
-//       );
-
-//       updatedOptions.itemTotal = updatedItemTotal;
-
-//       return {
-//         ...prevState,
-//         [fileId]: updatedOptions,
-//       };
-//     });
-//   };
-
-//   const handleCustomPriceChange = (fileId, value) => {
-//     setCustomPrices((prevState) => ({
-//       ...prevState,
-//       [fileId]: parseFloat(value) || 0,
-//     }));
-
-//     setFileOptions((prevState) => ({
-//       ...prevState,
-//       [fileId]: {
-//         ...prevState[fileId],
-//         customPrice: parseFloat(value) || 0,
-//         itemTotal: calculateItemTotal(
-//           prevState[fileId]?.material || 'PLA',
-//           prevState[fileId]?.density || '20%',
-//           prevState[fileId]?.quality || 'Draft',
-//           order.files.find((file) => file._id === fileId).buildVolume,
-//           prevState[fileId]?.quantity || 1,
-//           parseFloat(value) || 0
-//         ),
-//       },
-//     }));
-//   };
-
-//   const calculatePrice = (material, density, quality, buildVolume) => {
-//     const materialCost = optionsData.materialCosts[material] || 0;
-//     const densityCost = optionsData.densityCosts[density] || 0;
-//     const qualityCost = optionsData.qualityCosts[quality] || 0;
-//     const totalPrice = (materialCost + densityCost + qualityCost) * buildVolume;
-//     return Math.round(totalPrice);
-//   };
-
-//   const calculateItemTotal = (
-//     material,
-//     density,
-//     quality,
-//     buildVolume,
-//     quantity,
-//     customPrice = 0
-//   ) => {
-//     const materialCost = optionsData.materialCosts[material] || 0;
-//     const densityCost = optionsData.densityCosts[density] || 0;
-//     const qualityCost = optionsData.qualityCosts[quality] || 0;
-//     const price = customPrice || ((materialCost + densityCost + qualityCost) * buildVolume);
-//     return Math.round(price * quantity);
-//   };
-
-//   const calculateSubtotal = () => {
-//     return order.files.reduce((acc, file) => {
-//       const fileTotal = calculateItemTotal(
-//         fileOptions[file._id]?.material || 'PLA',
-//         fileOptions[file._id]?.density || '20%',
-//         fileOptions[file._id]?.quality || 'Draft',
-//         file.buildVolume,
-//         fileOptions[file._id]?.quantity || 1,
-//         customPrices[file._id] || 0
-//       );
-//       return acc + fileTotal;
-//     }, 0);
-//   };
-
-//   const calculateGST = (subtotal) => {
-//     return Math.round(subtotal * 0.18);
-//   };
-
-//   const calculateTotal = (subtotal, gst, shippingCharges) => {
-//     return subtotal + gst + shippingCharges;
-//   };
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (error) {
-//     return <div>Error: {error}</div>;
-//   }
-
-//   if (!order) {
-//     return <div>No order found</div>;
-//   }
-
-//   const subtotal = calculateSubtotal();
-//   const gst = calculateGST(subtotal);
-//   const shippingCharges = subtotal === 0 ? 0 : subtotal < 300 ? 50 : 0;
-//   const total = calculateTotal(subtotal, gst, shippingCharges);
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { debounce } from 'lodash';
 import '../styles/UploadedFiles.css';
 
-const socket = io('http://localhost:3001');
+const socket = io('https://www.3ding.in/uploading-test/server');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -293,7 +38,7 @@ const OrderDetails = () => {
 
   const debouncedUpdateOrder = useCallback(debounce(async (updatedOrder) => {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
+      const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -339,7 +84,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+      const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -355,7 +100,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/options');
+      const response = await fetch('https://www.3ding.in/uploading-test/server/options');
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {
