@@ -103,7 +103,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
 
         try {
           // Change localhost to your live backend URL
-          await fetch('https://www.3ding.in/uploading-test/server/upload', { // Update this line
+          await fetch('https://localhost:3001/upload', { // Update this line
             method: 'POST',
             body: formData,
           });

@@ -223,7 +223,7 @@ const UploadedFiles = () => {
     const fetchOptionsData = async () => {
       try {
         // Change localhost to your live backend URL
-        const response = await fetch('https://www.3ding.in/uploading-test/server/options'); // Update this line
+        const response = await fetch('https://localhost:3001/options'); // Update this line
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -247,7 +247,7 @@ const UploadedFiles = () => {
   const fetchFiles = async () => {
     try {
       // Change localhost to your live backend URL
-      const response = await fetch(`https://www.3ding.in/uploading-test/server/files/${session}`); // Update this line
+      const response = await fetch(`https://localhost:3001/files/${session}`); // Update this line
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -380,7 +380,7 @@ const UploadedFiles = () => {
       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
       // Change localhost to your live backend URL
-      const response = await fetch('https://www.3ding.in/uploading-test/server/submit-order', { // Update this line
+      const response = await fetch('https://localhost:3001/submit-order', { // Update this line
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

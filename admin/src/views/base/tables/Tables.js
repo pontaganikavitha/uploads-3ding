@@ -26,7 +26,7 @@ const Tables = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('https://www.3ding.in/uploading-test/server/orders');
+      const response = await fetch('https://localhost:3001orders');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

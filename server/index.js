@@ -24,43 +24,43 @@ const unlinkFile = util.promisify(fs.unlink);
 const app = express();
 const server = http.createServer(app);
 
-// // Configure Socket.IO (if real-time updates are needed)
-// const io = socketIo(server, {
-//   cors: {
-//     origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
-//     methods: ['GET', 'POST'],
-//   },
-// });
-
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: [
-      'https://www.3ding.in/uploading-test',
-      'https://www.3ding.in/uploading-test/admin'
-    ],
+    origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
+// // Configure Socket.IO (if real-time updates are needed)
+// const io = socketIo(server, {
+//   cors: {
+//     origin: [
+//       'https://www.3ding.in/uploading-test',
+//       'https://www.3ding.in/uploading-test/admin'
+//     ],
+//     methods: ['GET', 'POST'],
+//   },
+// });
 
-// CORS middleware setup
-// const corsOptions = {
-//   origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true,
-// };
 
-// CORS middleware setup
+//CORS middleware setup
 const corsOptions = {
-  origin: [
-    'https://www.3ding.in/uploading-test',
-    'https://www.3ding.in/uploading-test/admin',
-    'https://www.3ding.in/uploading-test/server'
-  ],
+  origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
+
+// // CORS middleware setup
+// const corsOptions = {
+//   origin: [
+//     'https://www.3ding.in/uploading-test',
+//     'https://www.3ding.in/uploading-test/admin',
+//     'https://www.3ding.in/uploading-test/server'
+//   ],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true,
+// };
 app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));

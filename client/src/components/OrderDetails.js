@@ -38,7 +38,7 @@ const OrderDetails = () => {
 
   const debouncedUpdateOrder = useCallback(debounce(async (updatedOrder) => {
     try {
-      const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`, {
+      const response = await fetch(`https://localhost:3001/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`https://www.3ding.in/uploading-test/server/orders/${orderId}`);
+      const response = await fetch(`https://localhost:3001/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -100,7 +100,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('https://www.3ding.in/uploading-test/server/options');
+      const response = await fetch('https://localhost:3001/options');
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {
