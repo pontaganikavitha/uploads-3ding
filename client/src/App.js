@@ -31,7 +31,7 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<Home />} /> {/* Default route */}
-          <Route path="/upload-test" element={<UploadedFiles />} />
+          <Route path="/upload" element={<UploadedFiles />} />
           {/* <Route path="/upload-with-same-oreder-id" element={<UploadingFilesWithOrderid />} /> */}
           <Route path="/upload-with-same-oreder-id" element={<UploadToExistingOrder />} />
           <Route path="/summary-test" element={<Summary />} />
