@@ -17,6 +17,7 @@ const fs = require('fs');
 const os = require('os');
 const util = require('util');
 
+
 // Promisify unlink for easier async/await usage
 const unlinkFile = util.promisify(fs.unlink);
 
@@ -65,6 +66,7 @@ app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "client/build")))
 
 // Connect to MongoDB without deprecated options
 mongoose
