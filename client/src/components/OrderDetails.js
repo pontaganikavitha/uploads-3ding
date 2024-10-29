@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { debounce } from 'lodash';
 import '../styles/UploadedFiles.css';
 
-const socket = io('https://www.3ding.in/uploading-test/server');
+const socket = io('http://localhost:3001');
 
 const OrderDetails = () => {
   const { orderId } = useParams();

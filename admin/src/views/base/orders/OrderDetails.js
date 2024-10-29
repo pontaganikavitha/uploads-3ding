@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-const socket = io('https://www.3ding.in/uploading-test/server');
+const socket = io('http://localhost:3001');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
