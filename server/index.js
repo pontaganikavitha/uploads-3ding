@@ -28,7 +28,7 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
+    origin: ['http://172.31.18.216:3000', 'http://172.31.18.216:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
@@ -47,7 +47,7 @@ const io = socketIo(server, {
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
+  origin: ['http://172.31.18.216:3000', 'http://172.31.18.216:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };

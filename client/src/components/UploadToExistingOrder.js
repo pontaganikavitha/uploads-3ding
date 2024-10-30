@@ -18,7 +18,7 @@
 // //     useEffect(() => {
 // //         const fetchOptionsData = async () => {
 // //             try {
-// //                 const response = await fetch('http://localhost:3001/options');
+// //                 const response = await fetch('http://172.31.18.216:3001/options');
 // //                 const data = await response.json();
 // //                 setOptionsData(data);
 // //             } catch (error) {
@@ -31,7 +31,7 @@
 
 // //     const fetchFiles = async (orderId) => {
 // //         try {
-// //             const response = await fetch(`http://localhost:3001/files/${orderId}`);
+// //             const response = await fetch(`http://172.31.18.216:3001/files/${orderId}`);
 // //             const data = await response.json();
 // //             setFiles(data);
 // //         } catch (error) {
@@ -146,7 +146,7 @@
 // //                 total
 // //             };
 
-// //             const response = await fetch('http://localhost:3001/submit-order', {
+// //             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 // //                 method: 'POST',
 // //                 headers: {
 // //                     'Content-Type': 'application/json'
@@ -343,7 +343,7 @@
 //         const fetchOptionsData = async () => {
 //             setLoading(true);
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //                 setError(null);
@@ -361,7 +361,7 @@
 //     const fetchFiles = async (orderId) => {
 //         setLoading(true);
 //         try {
-//             const response = await fetch(`http://localhost:3001/files/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/files/${orderId}`);
 //             const data = await response.json();
 //             setFiles(data);
 //             setError(null);
@@ -481,7 +481,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -681,7 +681,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 if (!response.ok) {
 //                     throw new Error('Network response was not ok');
 //                 }
@@ -697,7 +697,7 @@
 
 //     const fetchFiles = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/files/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/files/${orderId}`);
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
 //             }
@@ -816,7 +816,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -1020,7 +1020,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 if (!response.ok) {
 //                     throw new Error('Network response was not ok');
 //                 }
@@ -1036,7 +1036,7 @@
 
 //     const fetchFiles = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/files/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/files/${orderId}`);
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
 //             }
@@ -1160,7 +1160,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -1363,7 +1363,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -1376,7 +1376,7 @@
 
 //     const fetchFiles = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/files/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/files/${orderId}`);
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
 //             }
@@ -1509,7 +1509,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -1715,7 +1715,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -1728,7 +1728,7 @@
 
 //     const fetchFiles = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
 //             }
@@ -1861,7 +1861,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -2067,7 +2067,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -2080,7 +2080,7 @@
 
 //     const fetchFiles = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
 //             }
@@ -2211,7 +2211,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -2417,7 +2417,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -2430,7 +2430,7 @@
 
 //     const fetchFiles = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
 //             }
@@ -2567,7 +2567,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://localhost:3001/submit-order', {
+//             const response = await fetch('http://172.31.18.216:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -2773,7 +2773,7 @@ const UploadToExistingOrder = () => {
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/options');
+        const response = await fetch('http://172.31.18.216:3001/options');
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -2793,7 +2793,7 @@ const UploadToExistingOrder = () => {
 
   const fetchOrderDetails = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+      const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
       const orderData = await response.json();
       setFiles(orderData.files);
       setFileOptions(orderData.files.reduce((acc, file) => ({
@@ -2879,7 +2879,7 @@ const UploadToExistingOrder = () => {
         total
       };
 
-      const response = await fetch('http://localhost:3001/submit-order', {
+      const response = await fetch('http://172.31.18.216:3001/submit-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -3042,7 +3042,7 @@ export default UploadToExistingOrder;
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -3062,7 +3062,7 @@ export default UploadToExistingOrder;
 
 //     const fetchOrderDetails = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
 //             const orderData = await response.json();
 //             setFiles(orderData.files);
 //             setFileOptions(orderData.files.reduce((acc, file) => ({
@@ -3149,7 +3149,7 @@ export default UploadToExistingOrder;
 //                 }))
 //             };
 
-//             const response = await fetch(`http://localhost:3001/update-order/${existingOrderId}`, {
+//             const response = await fetch(`http://172.31.18.216:3001/update-order/${existingOrderId}`, {
 //                 method: 'PUT',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -3311,7 +3311,7 @@ export default UploadToExistingOrder;
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -3331,7 +3331,7 @@ export default UploadToExistingOrder;
 
 //     const fetchOrderDetails = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
 //             const orderData = await response.json();
 
 //             // Ensure files are not duplicated
@@ -3423,7 +3423,7 @@ export default UploadToExistingOrder;
 //                 }))
 //             };
 
-//             const response = await fetch(`http://localhost:3001/update-order/${existingOrderId}`, {
+//             const response = await fetch(`http://172.31.18.216:3001/update-order/${existingOrderId}`, {
 //                 method: 'PUT',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -3586,7 +3586,7 @@ export default UploadToExistingOrder;
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://localhost:3001/options');
+//                 const response = await fetch('http://172.31.18.216:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -3606,7 +3606,7 @@ export default UploadToExistingOrder;
 
 //     const fetchOrderDetails = async (orderId) => {
 //         try {
-//             const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+//             const response = await fetch(`http://172.31.18.216:3001/orders/${orderId}`);
 //             const orderData = await response.json();
 //             setFiles(orderData.files);
 //             setFileOptions(orderData.files.reduce((acc, file) => ({
@@ -3693,7 +3693,7 @@ export default UploadToExistingOrder;
 //                 }))
 //             };
 
-//             const response = await fetch(`http://localhost:3001/update-order/${existingOrderId}`, {
+//             const response = await fetch(`http://172.31.18.216:3001/update-order/${existingOrderId}`, {
 //                 method: 'PUT',
 //                 headers: {
 //                     'Content-Type': 'application/json'
