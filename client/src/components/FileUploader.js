@@ -39,7 +39,7 @@
 //         formData.append('orderId', orderId);
 
 //         try {
-//           await fetch('http://172.31.18.216:3001/upload', {
+//           await fetch('http://localhost:3001/upload', {
 //             method: 'POST',
 //             body: formData,
 //           });
@@ -102,8 +102,8 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         formData.append('orderId', orderId);
 
         try {
-          // Change 172.31.18.216 to your live backend URL
-          await fetch('https://172.31.18.216:3001/upload', { // Update this line
+          // Change localhost to your live backend URL
+          await fetch('https://test1.3ding.in/server/upload', { // Update this line
             method: 'POST',
             body: formData,
           });

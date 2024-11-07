@@ -25,46 +25,47 @@ const unlinkFile = util.promisify(fs.unlink);
 const app = express();
 const server = http.createServer(app);
 
-// Configure Socket.IO (if real-time updates are needed)
-const io = socketIo(server, {
-  cors: {
-    origin: ['http://172.31.18.216:3000', 'http://172.31.18.216:3002'], // Update with your client origins
-    methods: ['GET', 'POST'],
-  },
-});
-
 // // Configure Socket.IO (if real-time updates are needed)
 // const io = socketIo(server, {
 //   cors: {
-//     origin: [
-//       'https://www.3ding.in/uploading-test',
-//       'https://www.3ding.in/uploading-test/admin'
-//     ],
+//     origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
 //     methods: ['GET', 'POST'],
 //   },
 // });
 
+// Configure Socket.IO (if real-time updates are needed)
+const io = socketIo(server, {
+  cors: {
+    origin: [
+      'https://test1.3ding.in', // main client origin
+      'https://test1.3ding.in/admin' // admin origin
+    ],
+    methods: ['GET', 'POST'],
+  },
+});
 
-//CORS middleware setup
-const corsOptions = {
-  origin: ['http://172.31.18.216:3000', 'http://172.31.18.216:3002'], // Update with your client origins
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-};
 
-// // CORS middleware setup
+
+// //CORS middleware setup
 // const corsOptions = {
-//   origin: [
-//     'https://www.3ding.in/uploading-test',
-//     'https://www.3ding.in/uploading-test/admin',
-//     'https://www.3ding.in/uploading-test/server'
-//   ],
+//   origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
 //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 //   credentials: true,
 // };
+
+
+//CORS middleware setup
+const corsOptions = {
+  origin: [
+    'https://test1.3ding.in', // main client origin
+    'https://test1.3ding.in/admin', // admin subpath
+    'https://test1.3ding.in/server' // server subpath
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
 app.use(cors(corsOptions));
 
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")))
 
@@ -561,8 +562,16 @@ app.get('/options', async (req, res) => {
   }
 });
 
-// Start the server
-const port = process.env.PORT || 3001;
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// // Start the server
+// const port = process.env.PORT || 3001;
+// server.listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
+
+const host = "0.0.0.0";
+const port = process.env.port || 3001;
+server.listen({ host, port }, () => {
+  console.log(
+    `[[${new Date().toLocaleTimeString()}] tus server listening at http://${host}:${port}`
+  );
 });
