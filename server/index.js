@@ -25,46 +25,47 @@ const unlinkFile = util.promisify(fs.unlink);
 const app = express();
 const server = http.createServer(app);
 
-// // Configure Socket.IO (if real-time updates are needed)
-// const io = socketIo(server, {
-//   cors: {
-//     origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
-//     methods: ['GET', 'POST'],
-//   },
-// });
-
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: [
-      'https://test1.3ding.in', // main client origin
-      'https://test1.3ding.in/admin' // admin origin
-    ],
+    origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
+// // Configure Socket.IO (if real-time updates are needed)
+// const io = socketIo(server, {
+//   cors: {
+//     origin: [
+//       'https://test1.3ding.in', // main client origin
+//       'https://test1.3ding.in/admin' // admin origin
+//     ],
+//     methods: ['GET', 'POST'],
+//   },
+// });
 
-
-// //CORS middleware setup
-// const corsOptions = {
-//   origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true,
-// };
 
 
 //CORS middleware setup
 const corsOptions = {
-  origin: [
-    'https://test1.3ding.in', // main client origin
-    'https://test1.3ding.in/admin', // admin subpath
-    'https://test1.3ding.in/server' // server subpath
-  ],
+  origin: ['http://localhost:3000', 'http://localhost:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+
+// //CORS middleware setup
+// const corsOptions = {
+//   origin: [
+//     'https://test1.3ding.in', // main client origin
+//     'https://test1.3ding.in/admin', // admin subpath
+//     'https://test1.3ding.in/server' // server subpath
+//   ],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true,
+// };
+// app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")))

@@ -89,7 +89,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         proudlyDisplayPoweredByUppy: false,
         metaFields: [{ id: 'name', name: 'Name', placeholder: 'file name' }],
       })
-      .use(Tus, { endpoint: 'https://tusd.tusdemo.net/files/', limit: 6 });
+      .use(Tus, { endpoint: 'http://tusd.tusdemo.net/files/', limit: 6 });
 
     uppy.on('complete', async (result) => {
       const successfulUploads = result.successful;
@@ -103,7 +103,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
 
         try {
           // Change localhost to your live backend URL
-          await fetch('https://test1.3ding.in/server/upload', { // Update this line
+          await fetch('https://localhost:3001/upload', { // Update this line
             method: 'POST',
             body: formData,
           });
