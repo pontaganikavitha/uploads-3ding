@@ -19,7 +19,7 @@
 //   useEffect(() => {
 //     const fetchOptionsData = async () => {
 //       try {
-//         const response = await fetch('http://localhost:3001/options');
+//         const response = await fetch('/server/options');
 //         const data = await response.json();
 //         setOptionsData(data);
 //       } catch (error) {
@@ -42,7 +42,7 @@
 
 //   const fetchFiles = async () => {
 //     try {
-//       const response = await fetch(`http://localhost:3001/files/${session}`);
+//       const response = await fetch(`/server/files/${session}`);
 //       const data = await response.json();
 //       setFiles(data);
 //     } catch (error) {
@@ -175,7 +175,7 @@
 
 //       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
-//       const response = await fetch('http://localhost:3001/submit-order', {
+//       const response = await fetch('/server/submit-order', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json'
@@ -223,7 +223,7 @@ const UploadedFiles = () => {
     const fetchOptionsData = async () => {
       try {
         // Change localhost to your live backend URL
-        const response = await fetch('http://localhost:3001/options'); // Update this line
+        const response = await fetch('/server/options'); // Update this line
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -247,7 +247,7 @@ const UploadedFiles = () => {
   const fetchFiles = async () => {
     try {
       // Change localhos:3001/t to your live backend URL
-      const response = await fetch(`http://localhost:3001/files/${session}`); // Update this line
+      const response = await fetch(`/server/files/${session}`); // Update this line
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -380,7 +380,7 @@ const UploadedFiles = () => {
       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
       // Change localhost to your live backend URL
-      const response = await fetch('http://localhost:3001/submit-order', { // Update this line
+      const response = await fetch('/server/submit-order', { // Update this line
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
