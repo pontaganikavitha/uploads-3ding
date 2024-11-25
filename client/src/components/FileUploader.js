@@ -39,7 +39,7 @@
 //         formData.append('orderId', orderId);
 
 //         try {
-//           await fetch('http://localhost:3001/upload', {
+//           await fetch('/server/upload', {
 //             method: 'POST',
 //             body: formData,
 //           });
