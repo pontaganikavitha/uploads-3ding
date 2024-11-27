@@ -68,6 +68,10 @@ import Tus from '@uppy/tus';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 
+// Base API URL from environment
+const SOCKET_URL = process.env.SOCKET_URL || 'http://localhost:3001';
+
+
 const FileUploader = ({ session, orderId, onComplete }) => {
   useEffect(() => {
     const uppy = new Uppy({
@@ -103,7 +107,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
 
         try {
           // Change localhost to your live backend URL
-          await fetch('http://localhost:3001/upload', { // Update this line
+          await fetch(`${SOCKET_URL}/upload`, { // Update this line
             method: 'POST',
             body: formData,
           });

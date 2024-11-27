@@ -4,7 +4,9 @@ import { io } from 'socket.io-client';
 import { debounce } from 'lodash';
 import '../styles/UploadedFiles.css';
 
-const socket = io('http://localhost:3001');
+// const socket = io('http://localhost:3001');
+
+const SOCKET_URL = process.env.SOCKET_URL || 'http://localhost:3001';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -21,6 +23,7 @@ const OrderDetails = () => {
   const [customPrices, setCustomPrices] = useState({});
 
   useEffect(() => {
+    const socket = io(SOCKET_URL, { transports: ['polling', 'websocket'] });
     fetchOrderDetails();
     fetchOptionsData();
 
@@ -38,7 +41,7 @@ const OrderDetails = () => {
 
   const debouncedUpdateOrder = useCallback(debounce(async (updatedOrder) => {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
+      const response = await fetch(`${SOCKET_URL}/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +87,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`);
+      const response = await fetch(`${SOCKET_URL}/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -100,7 +103,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/options');
+      const response = await fetch(`${SOCKET_URL}/options`);
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {

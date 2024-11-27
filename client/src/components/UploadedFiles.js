@@ -219,11 +219,14 @@ const UploadedFiles = () => {
     qualityCosts: {},
   });
 
+  // Base API URL from environment
+  const API_BASE_URL = process.env.SOCKET_URL || 'http://localhost:3001';
+
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
         // Change localhost to your live backend URL
-        const response = await fetch('http://localhost:3001/options'); // Update this line
+        const response = await fetch(`${API_BASE_URL}/options`); // Update this line
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -247,7 +250,7 @@ const UploadedFiles = () => {
   const fetchFiles = async () => {
     try {
       // Change localhos:3001/t to your live backend URL
-      const response = await fetch(`http://localhost:3001/files/${session}`); // Update this line
+      const response = await fetch(`${API_BASE_URL}/files/${session}`); // Update this line
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -380,7 +383,7 @@ const UploadedFiles = () => {
       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
       // Change localhost to your live backend URL
-      const response = await fetch('http://localhost:3001/submit-order', { // Update this line
+      const response = await fetch(`${API_BASE_URL}/submit-order`, { // Update this line
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

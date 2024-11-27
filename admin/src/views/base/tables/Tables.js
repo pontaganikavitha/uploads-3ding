@@ -20,13 +20,15 @@ const Tables = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_URL = process.env.SOCKET_URL || 'http://localhost:3001/';
+
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:3001/orders');
+      const response = await fetch(`${API_URL}/orders`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
