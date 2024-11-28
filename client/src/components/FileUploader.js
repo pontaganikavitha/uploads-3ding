@@ -39,7 +39,7 @@
 //         formData.append('orderId', orderId);
 
 //         try {
-//           await fetch('http://54.252.188.100:3001/upload', {
+//           await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/upload', {
 //             method: 'POST',
 //             body: formData,
 //           });
@@ -103,7 +103,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
 
         try {
           // Change localhost to your live backend URL
-          await fetch('http://54.252.188.100:3001/upload', { // Update this line
+          await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/upload', { // Update this line
             method: 'POST',
             body: formData,
           });

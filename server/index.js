@@ -29,43 +29,23 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://54.252.188.100:3000', 'http://54.252.188.100:3002'], // Update with your client origins
+    origin: ['http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3000', 'http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
-// // Configure Socket.IO (if real-time updates are needed)
-// const io = socketIo(server, {
-//   cors: {
-//     origin: [
-//       'https://test1.3ding.in', // main client origin
-//       'https://test1.3ding.in/admin' // admin origin
-//     ],
-//     methods: ['GET', 'POST'],
-//   },
-// });
+
 
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://54.252.188.100:3000', 'http://54.252.188.100:3002'], // Update with your client origins
+  origin: ['http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3000', 'http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
 app.use(cors(corsOptions));
 
 
-// //CORS middleware setup
-// const corsOptions = {
-//   origin: [
-//     'https://test1.3ding.in', // main client origin
-//     'https://test1.3ding.in/admin', // admin subpath
-//     'https://test1.3ding.in/server' // server subpath
-//   ],
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")))

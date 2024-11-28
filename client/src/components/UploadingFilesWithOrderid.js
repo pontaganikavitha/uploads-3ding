@@ -19,7 +19,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://54.252.188.100:3001/options');
+//                 const response = await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -42,7 +42,7 @@
 
 //     const fetchFiles = async () => {
 //         try {
-//             const response = await fetch(`http://54.252.188.100:3001/files/${session}`);
+//             const response = await fetch(`http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/files/${session}`);
 //             const data = await response.json();
 //             setFiles(data);
 //         } catch (error) {
@@ -161,7 +161,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://54.252.188.100:3001/submit-order', {
+//             const response = await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -350,7 +350,7 @@
 //     useEffect(() => {
 //         const fetchOptionsData = async () => {
 //             try {
-//                 const response = await fetch('http://54.252.188.100:3001/options');
+//                 const response = await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/options');
 //                 const data = await response.json();
 //                 setOptionsData(data);
 //             } catch (error) {
@@ -366,7 +366,7 @@
 
 //     const fetchFiles = async () => {
 //         try {
-//             const response = await fetch(`http://54.252.188.100:3001/files/${orderId}`);
+//             const response = await fetch(`http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/files/${orderId}`);
 //             const data = await response.json();
 //             setFiles(data);
 //         } catch (error) {
@@ -486,7 +486,7 @@
 //                 total
 //             };
 
-//             const response = await fetch('http://54.252.188.100:3001/submit-order', {
+//             const response = await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/submit-order', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json'
@@ -681,7 +681,7 @@ const UploadingFilesWithOrderid = () => {
     useEffect(() => {
         const fetchOptionsData = async () => {
             try {
-                const response = await fetch('http://54.252.188.100:3001/options');
+                const response = await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/options');
                 const data = await response.json();
                 setOptionsData(data);
             } catch (error) {
@@ -697,7 +697,7 @@ const UploadingFilesWithOrderid = () => {
 
     const fetchFiles = async () => {
         try {
-            const response = await fetch(`http://54.252.188.100:3001/files/${session}`);
+            const response = await fetch(`http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/files/${session}`);
             const data = await response.json();
             setFiles(data);
         } catch (error) {
@@ -808,7 +808,7 @@ const UploadingFilesWithOrderid = () => {
                 total
             };
 
-            const response = await fetch('http://54.252.188.100:3001/submit-order', {
+            const response = await fetch('http://ec2-3-25-81-179.ap-southeast-2.compute.amazonaws.com:3001/submit-order', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
