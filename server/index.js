@@ -29,7 +29,7 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://ec2-13-238-159-115.ap-southeast-2.compute.amazonaws.com:3002', 'http://ec2-13-238-159-115.ap-southeast-2.compute.amazonaws.com/3000', 'http://ec2-13-238-159-115.ap-southeast-2.compute.amazonaws.com/3001'], // Update with your client origins
+    origin: ['http://54.252.188.100:3000', 'http://54.252.188.100:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
@@ -46,10 +46,9 @@ const io = socketIo(server, {
 // });
 
 
-
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://ec2-13-238-159-115.ap-southeast-2.compute.amazonaws.com', 'http://ec2-13-238-159-115.ap-southeast-2.compute.amazonaws.com/admin', 'http://ec2-13-238-159-115.ap-southeast-2.compute.amazonaws.com/server'], // Update with your client origins
+  origin: ['http://54.252.188.100:3000', 'http://54.252.188.100:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
