@@ -29,7 +29,7 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://54.252.96.3:3000', 'http://54.252.96.3:3002'], // Update with your client origins
+    origin: ['http://54.206.1.177:3000', 'http://54.206.1.177:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
@@ -39,7 +39,7 @@ const io = socketIo(server, {
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://54.252.96.3:3000', 'http://54.252.96.3:3002'], // Update with your client origins
+  origin: ['http://54.206.1.177:3000', 'http://54.206.1.177:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
