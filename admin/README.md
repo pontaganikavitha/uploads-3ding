@@ -48,6 +48,7 @@ CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of 
 
 * 💪  [CoreUI PRO Angular Admin Template](https://coreui.io/product/angular-dashboard-template/)
 * 💪  [CoreUI PRO Bootstrap Admin Template](https://coreui.io/product/bootstrap-dashboard-template/)
+* 💪  [CoreUI PRO Next.js Admin Template](https://coreui.io/product/next-js-dashboard-template/)
 * 💪  [CoreUI PRO React Admin Template](https://coreui.io/product/react-dashboard-template/)
 * 💪  [CoreUI PRO Vue Admin Template](https://coreui.io/product/vue-dashboard-template/)
 
@@ -57,9 +58,9 @@ CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of 
 | --- | --- |
 | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=default) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=light)|
 
-| Default Theme v3 | Light Theme v3 |
+| Modern Theme | Bright Theme |
 | --- | --- |
-| [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=default-v3) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=light)|
+| [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=modern) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=bright)|
 
 ## Quick Start
 
@@ -81,18 +82,18 @@ $ yarn install
 ### Basic usage
 
 ``` bash
-# dev server with hot reload at http://13.238.52.3:3000
+# dev server with hot reload at http://13.236.37.235:3000
 $ npm start 
 ```
 
 or 
 
 ``` bash
-# dev server with hot reload at http://13.238.52.3:3000
+# dev server with hot reload at http://13.236.37.235:3000
 $ yarn start
 ```
 
-Navigate to [http://13.238.52.3:3000](http://13.238.52.3:3000). The app will automatically reload if you change any of the source files.
+Navigate to [http://13.236.37.235:3000](http://13.236.37.235:3000). The app will automatically reload if you change any of the source files.
 
 #### Build
 

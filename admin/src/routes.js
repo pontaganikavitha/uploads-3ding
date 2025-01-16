@@ -16,6 +16,7 @@ const Paginations = React.lazy(() => import('./views/base/paginations/Pagination
 const Placeholders = React.lazy(() => import('./views/base/placeholders/Placeholders'))
 const Popovers = React.lazy(() => import('./views/base/popovers/Popovers'))
 const Progress = React.lazy(() => import('./views/base/progress/Progress'))
+const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'))
 const OrderDetails = React.lazy(() => import('./views/base/orders/OrderDetails'))
 const Tables = React.lazy(() => import('./views/base/tables/Tables'))
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
@@ -70,9 +71,7 @@ const routes = [
   { path: '/base/progress', name: 'Progress', element: Progress },
   { path: '/base/orders', name: 'OrderDetails', element: OrderDetails },
   { path: '/base/tables', name: 'Tables', element: Tables },
-
   { path: '/base/orders/:orderId', name: 'OrderDetails', element: OrderDetails }, // Dynamic route for order details
-
   { path: '/base/tooltips', name: 'Tooltips', element: Tooltips },
   { path: '/buttons', name: 'Buttons', element: Buttons, exact: true },
   { path: '/buttons/buttons', name: 'Buttons', element: Buttons },

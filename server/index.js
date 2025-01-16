@@ -25,27 +25,24 @@ const unlinkFile = util.promisify(fs.unlink);
 const app = express();
 const server = http.createServer(app);
 
-
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://13.238.52.3:3000', 'http://13.238.52.3:3002'], // Update with your client origins
+    origin: ['http://13.236.37.235:3000', 'http://13.236.37.235:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
 
 
-
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://13.238.52.3:3000', 'http://13.238.52.3:3002'], // Update with your client origins
+  origin: ['http://13.236.37.235:3000', 'http://13.236.37.235:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
+
 app.use(cors(corsOptions));
-
-
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")))
@@ -123,12 +120,109 @@ io.on('connection', (socket) => {
 });
 
 // API Endpoints
-
 /**
  * @route   POST /upload
  * @desc    Handle file uploads
  * @access  Public (Consider securing this endpoint)
  */
+// app.post('/upload', upload.single('file'), async (req, res) => {
+//   const { session, orderId, originalName } = req.body;
+
+//   console.log('Received upload request:', { session, orderId, originalName });
+
+//   if (!session || !orderId || !originalName) {
+//     return res.status(400).send('Missing session, orderId, or originalName');
+//   }
+
+//   // Ensure that a file is present
+//   if (!req.file) {
+//     return res.status(400).send('No file uploaded');
+//   }
+
+//   // Generate a unique filename to prevent collisions
+//   const uniqueFileName = `${Date.now()}-${path.basename(originalName)}`;
+
+//   try {
+//     // Initialize file data object
+//     const fileData = {
+//       orderId,
+//       session,
+//       name: uniqueFileName,
+//       originalName: originalName,
+//       url: '', // To be updated after S3 upload
+//       buildVolume: 0,
+//       dimensions: { length: 0, width: 0, height: 0 },
+//     };
+
+//     // If the uploaded file is an STL, extract dimensions and volume
+//     if (originalName.toLowerCase().endsWith('.stl')) {
+//       const tempFilePath = path.join(os.tmpdir(), uniqueFileName);
+//       await fs.promises.writeFile(tempFilePath, req.file.buffer);
+//       const stl = new STL(tempFilePath);
+//       fileData.dimensions = {
+//         length: stl.boundingBox[0],
+//         width: stl.boundingBox[1],
+//         height: stl.boundingBox[2],
+//       };
+//       fileData.buildVolume = stl.volume;
+//       // Remove the temporary file
+//       await unlinkFile(tempFilePath);
+//     }
+
+//     // Define S3 upload parameters using AWS SDK v3
+//     const params = {
+//       Bucket: S3_BUCKET,
+//       Key: `uploads/${uniqueFileName}`, // File will be saved under 'uploads/' prefix in S3
+//       Body: req.file.buffer,
+//       ContentType: req.file.mimetype,
+//       // ACL: 'public-read', // Removed due to bucket policy
+//     };
+
+//     // Upload the file to S3
+//     const command = new PutObjectCommand(params);
+//     await s3.send(command);
+
+//     // Construct the S3 file URL
+//     const fileUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${uniqueFileName}`;
+//     fileData.url = fileUrl;
+
+//     // Save the file metadata to MongoDB
+//     const newFile = new File(fileData);
+//     await newFile.save();
+
+//     // Update or create the order in MongoDB
+//     let existingOrder = await Order.findOne({ orderId: orderId });
+
+//     if (existingOrder) {
+//       existingOrder.files.push(newFile._id);
+//       await existingOrder.save();
+//     } else {
+//       existingOrder = new Order({
+//         orderId,
+//         session,
+//         files: [fileData],
+//         subtotal: 0,
+//         gst: 0,
+//         shippingCharges: 0,
+//         total: 0,
+//       });
+//       await existingOrder.save();
+//     }
+
+//     // Emit a real-time event (optional)
+//     io.emit('fileUploaded', { orderId, file: newFile });
+
+//     // Retrieve updated files for the session
+//     const updatedFiles = await File.find({ session: session });
+
+//     res.status(201).json(updatedFiles);
+//   } catch (err) {
+//     console.error('Error during file upload:', err);
+//     res.status(500).send(err.message);
+//   }
+// });
+
+
 app.post('/upload', upload.single('file'), async (req, res) => {
   const { session, orderId, originalName } = req.body;
 
@@ -138,27 +232,23 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     return res.status(400).send('Missing session, orderId, or originalName');
   }
 
-  // Ensure that a file is present
   if (!req.file) {
     return res.status(400).send('No file uploaded');
   }
 
-  // Generate a unique filename to prevent collisions
   const uniqueFileName = `${Date.now()}-${path.basename(originalName)}`;
 
   try {
-    // Initialize file data object
     const fileData = {
       orderId,
       session,
       name: uniqueFileName,
-      originalName: originalName,
-      url: '', // To be updated after S3 upload
+      originalName,
+      url: '',
       buildVolume: 0,
       dimensions: { length: 0, width: 0, height: 0 },
     };
 
-    // If the uploaded file is an STL, extract dimensions and volume
     if (originalName.toLowerCase().endsWith('.stl')) {
       const tempFilePath = path.join(os.tmpdir(), uniqueFileName);
       await fs.promises.writeFile(tempFilePath, req.file.buffer);
@@ -169,37 +259,33 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         height: stl.boundingBox[2],
       };
       fileData.buildVolume = stl.volume;
-      // Remove the temporary file
       await unlinkFile(tempFilePath);
     }
 
-    // Define S3 upload parameters using AWS SDK v3
     const params = {
       Bucket: S3_BUCKET,
-      Key: `uploads/${uniqueFileName}`, // File will be saved under 'uploads/' prefix in S3
+      Key: `uploads/${uniqueFileName}`,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
-      // ACL: 'public-read', // Removed due to bucket policy
     };
 
-    // Upload the file to S3
     const command = new PutObjectCommand(params);
     await s3.send(command);
 
-    // Construct the S3 file URL
     const fileUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${uniqueFileName}`;
     fileData.url = fileUrl;
 
-    // Save the file metadata to MongoDB
     const newFile = new File(fileData);
     await newFile.save();
 
-    // Update or create the order in MongoDB
-    let existingOrder = await Order.findOne({ orderId: orderId });
+    let existingOrder = await Order.findOne({ orderId });
 
     if (existingOrder) {
-      existingOrder.files.push(newFile._id);
-      await existingOrder.save();
+      // Prevent duplicating files
+      const existingFiles = existingOrder.files.map(f => f.name);
+      if (!existingFiles.includes(uniqueFileName)) {
+        existingOrder.files.push(fileData);
+      }
     } else {
       existingOrder = new Order({
         orderId,
@@ -210,14 +296,13 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         shippingCharges: 0,
         total: 0,
       });
-      await existingOrder.save();
     }
 
-    // Emit a real-time event (optional)
+    await existingOrder.save();
+
     io.emit('fileUploaded', { orderId, file: newFile });
 
-    // Retrieve updated files for the session
-    const updatedFiles = await File.find({ session: session });
+    const updatedFiles = await File.find({ session });
 
     res.status(201).json(updatedFiles);
   } catch (err) {
@@ -263,50 +348,6 @@ app.get('/orders/:orderId', async (req, res) => {
   }
 });
 
-/**
- * @route   PUT /orders/:orderId
- * @desc    Update order details
- * @access  Public (Consider securing this endpoint)
- */
-// Update order details
-app.put('/orders/:orderId', async (req, res) => {
-  const { orderId } = req.params;
-  const { files } = req.body;
-
-  try {
-    const updatedFiles = files.map(file => ({
-      ...file,
-      itemTotal: file.itemTotal || 0,
-      customPrice: file.customPrice,
-    }));
-
-    // Calculate subtotal based on itemTotal for all files
-    const subtotal = Math.round(updatedFiles.reduce((acc, file) => acc + (file.itemTotal || 0), 0));
-
-    // Calculate gst and shipping charges
-    const gst = Math.round(subtotal * 0.18);
-    const shippingCharges = 0;
-    const total = Math.round(subtotal + gst + shippingCharges);
-
-    // Update the order with the recalculated values
-    const updatedOrder = await Order.findOneAndUpdate(
-      { orderId: orderId },
-      { files: updatedFiles, subtotal, gst, shippingCharges, total },
-      { new: true }
-    );
-
-    if (!updatedOrder) {
-      return res.status(404).json({ error: 'Order not found' });
-    }
-
-    io.emit('orderUpdated', { orderId: updatedOrder.orderId, updatedOrder });
-
-    res.json(updatedOrder);
-  } catch (error) {
-    console.error('Error updating order:', error);
-    res.status(500).json({ error: 'Failed to update order' });
-  }
-});
 
 /**
  * @route   POST /submit-order
@@ -345,6 +386,8 @@ app.post('/submit-order', async (req, res) => {
   }
 });
 
+
+
 /**
  * @route   GET /orders
  * @desc    Fetch all orders
@@ -360,52 +403,40 @@ app.get('/orders', async (req, res) => {
   }
 });
 
+
 /**
- * @route   PUT /update-order/:orderId
- * @desc    Update order with new files and recalculate totals
+ * @route   PUT /orders/:orderId
+ * @desc    Update order details
  * @access  Public (Consider securing this endpoint)
  */
-
-// Update order with new files and recalculate totals
-app.put('/update-order/:orderId', async (req, res) => {
+app.put('/orders/:orderId', async (req, res) => {
   const { orderId } = req.params;
-  const { newFiles } = req.body; // new files to be added
+  const { files, subtotal, gst, shippingCharges, total } = req.body;
 
   try {
-    const existingOrder = await Order.findOne({ orderId: orderId });
+    const updatedOrder = await Order.findOneAndUpdate(
+      { orderId },
+      {
+        files: files.map(file => ({
+          ...file,
+          itemTotal: file.itemTotal || 0,
+          customPrice: file.customPrice,
+        })),
+        subtotal,
+        gst,
+        shippingCharges,
+        total,
+      },
+      { new: true }
+    );
 
-    if (!existingOrder) {
-      return res.status(404).send('Order not found');
+    if (!updatedOrder) {
+      return res.status(404).json({ error: 'Order not found' });
     }
 
-    // Add new files to the existing order
-    const updatedFiles = [...existingOrder.files, ...newFiles];
+    io.emit('orderUpdated', { orderId: updatedOrder.orderId, updatedOrder });
 
-    // Calculate subtotal based on itemTotal of all files
-    const subtotal = Math.round(updatedFiles.reduce((acc, file) => acc + (file.itemTotal || 0), 0));
-
-    // Calculate GST (assuming GST rate is 18.1% of subtotal)
-    const gst = Math.round(subtotal * 0.18);
-
-    // Set shipping charges (assuming shipping charges are based on subtotal)
-    const shippingCharges = subtotal === 0 ? 0 : subtotal < 300 ? 50 : 0;
-
-    // Calculate total
-    const total = Math.round(subtotal + gst + shippingCharges);
-
-    // Update the order with the new files and recalculated values
-    existingOrder.files = updatedFiles;
-    existingOrder.subtotal = subtotal;
-    existingOrder.gst = gst;
-    existingOrder.shippingCharges = shippingCharges;
-    existingOrder.total = total;
-
-    await existingOrder.save();
-
-    // Emit socket event to notify clients about order update
-    io.emit('orderUpdated', { orderId: existingOrder.orderId, updatedOrder: existingOrder });
-
-    res.json(existingOrder);
+    res.json(updatedOrder);
   } catch (error) {
     console.error('Error updating order:', error);
     res.status(500).json({ error: 'Failed to update order' });
@@ -542,12 +573,6 @@ app.get('/options', async (req, res) => {
     res.status(500).send('Error fetching options data');
   }
 });
-
-// // Start the server
-// const port = process.env.PORT || 3001;
-// server.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
 
 const host = "0.0.0.0";
 const port = process.env.port || 3001;

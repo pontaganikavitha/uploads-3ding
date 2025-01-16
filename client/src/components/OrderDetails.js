@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { debounce } from 'lodash';
 import '../styles/UploadedFiles.css';
 
-const socket = io('http://13.238.52.3:3001');
+const socket = io('http://13.236.37.235:3001');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -38,7 +38,7 @@ const OrderDetails = () => {
 
   const debouncedUpdateOrder = useCallback(debounce(async (updatedOrder) => {
     try {
-      const response = await fetch(`http://13.238.52.3:3001/orders/${orderId}`, {
+      const response = await fetch(`http://13.236.37.235:3001/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -62,6 +62,12 @@ const OrderDetails = () => {
       const updatedFiles = order.files.map((file) => ({
         ...file,
         options: fileOptions[file._id],
+        price: calculatePrice(
+          fileOptions[file._id]?.material || 'PLA',
+          fileOptions[file._id]?.density || '20%',
+          fileOptions[file._id]?.quality || 'Draft',
+          file.buildVolume
+        ),
         itemTotal: calculateItemTotal(
           fileOptions[file._id]?.material || 'PLA',
           fileOptions[file._id]?.density || '20%',
@@ -73,7 +79,15 @@ const OrderDetails = () => {
         customPrice: customPrices[file._id] || 0,
       }));
 
-      const updatedOrder = { ...order, files: updatedFiles };
+      // const updatedOrder = { ...order, files: updatedFiles };
+      const updatedOrder = {
+        ...order,
+        files: updatedFiles,
+        subtotal,          // Add subtotal
+        shippingCharges,   // Add shipping charges
+        gst,               // Add GST
+        total,             // Add total
+      };
 
       // Check if the new order is different from the current order
       if (JSON.stringify(updatedOrder) !== JSON.stringify(order)) {
@@ -84,7 +98,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://13.238.52.3:3001/orders/${orderId}`);
+      const response = await fetch(`http://13.236.37.235:3001/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -100,7 +114,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://13.238.52.3:3001/options');
+      const response = await fetch('http://13.236.37.235:3001/options');
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {
@@ -119,7 +133,8 @@ const OrderDetails = () => {
         color: file.options?.color || '',
         quality: file.options?.quality || 'Draft',
         density: file.options?.density || '20%',
-        quantity: file.options?.quantity || 1,
+        // quantity: file.options?.quantity || 1,
+        quantity: file.options?.quantity !== undefined ? file.options.quantity : 1,
         customPrice: file.customPrice || 0,
         itemTotal: calculateItemTotal(
           file.options?.material || 'PLA',
@@ -150,9 +165,6 @@ const OrderDetails = () => {
         updatedOptions.density = newTechnologyOptions.density[0] || '';
       }
 
-      if (optionType === 'quantity' && updatedOptions.quantity < 1) {
-        updatedOptions.quantity = 1;
-      }
 
       const updatedItemTotal = calculateItemTotal(
         updatedOptions.material || 'PLA',
@@ -203,6 +215,22 @@ const OrderDetails = () => {
     return Math.round(totalPrice);
   };
 
+
+  // const calculateItemTotal = (
+  //   material,
+  //   density,
+  //   quality,
+  //   buildVolume,
+  //   quantity,
+  //   customPrice = 0
+  // ) => {
+  //   const materialCost = optionsData.materialCosts[material] || 0;
+  //   const densityCost = optionsData.densityCosts[density] || 0;
+  //   const qualityCost = optionsData.qualityCosts[quality] || 0;
+  //   const price = customPrice || ((materialCost + densityCost + qualityCost) * buildVolume);
+  //   return Math.round(price * quantity);
+  // };
+
   const calculateItemTotal = (
     material,
     density,
@@ -214,23 +242,48 @@ const OrderDetails = () => {
     const materialCost = optionsData.materialCosts[material] || 0;
     const densityCost = optionsData.densityCosts[density] || 0;
     const qualityCost = optionsData.qualityCosts[quality] || 0;
-    const price = customPrice || ((materialCost + densityCost + qualityCost) * buildVolume);
-    return Math.round(price * quantity);
+
+    if (customPrice !== 0) {
+      return Math.round(customPrice * (quantity || 0)); // Use 0 if quantity is 0
+    } else {
+      const totalPrice = (materialCost + densityCost + qualityCost) * buildVolume;
+      return Math.round(totalPrice * (quantity || 0)); // Use 0 if quantity is 0
+    }
   };
+
+
+  // const calculateSubtotal = () => {
+  //   return order.files.reduce((acc, file) => {
+  //     const fileTotal = calculateItemTotal(
+  //       fileOptions[file._id]?.material || 'PLA',
+  //       fileOptions[file._id]?.density || '20%',
+  //       fileOptions[file._id]?.quality || 'Draft',
+  //       file.buildVolume,
+  //       fileOptions[file._id]?.quantity || 1,
+  //       customPrices[file._id] || 0
+  //     );
+  //     return acc + fileTotal;
+  //   }, 0);
+  // };
 
   const calculateSubtotal = () => {
     return order.files.reduce((acc, file) => {
-      const fileTotal = calculateItemTotal(
-        fileOptions[file._id]?.material || 'PLA',
-        fileOptions[file._id]?.density || '20%',
-        fileOptions[file._id]?.quality || 'Draft',
-        file.buildVolume,
-        fileOptions[file._id]?.quantity || 1,
-        customPrices[file._id] || 0
-      );
+      const quantity = fileOptions[file._id]?.quantity ?? 1; // Use 0 if explicitly set
+      const fileTotal =
+        quantity > 0
+          ? calculateItemTotal(
+            fileOptions[file._id]?.material || 'PLA',
+            fileOptions[file._id]?.density || '20%',
+            fileOptions[file._id]?.quality || 'Draft',
+            file.buildVolume,
+            quantity,
+            customPrices[file._id] || 0
+          )
+          : 0; // Skip adding to subtotal if quantity is 0
       return acc + fileTotal;
     }, 0);
   };
+
 
   const calculateGST = (subtotal) => {
     return Math.round(subtotal * 0.18);
@@ -242,6 +295,7 @@ const OrderDetails = () => {
 
   if (loading) {
     return <div>Loading...</div>;
+
   }
 
   if (error) {
@@ -388,12 +442,19 @@ const OrderDetails = () => {
                     </select>
                   </td>
                   <td className="col-md-1 py-3">
-                    <input
+                    {/* <input
                       type="number"
                       className="form-control"
                       value={fileOptions[file._id]?.quantity || 1}
                       onChange={(e) => handleOptionChange(file._id, 'quantity', parseInt(e.target.value))}
                       min="1"
+                    /> */}
+                    <input
+                      type="number"
+                      className="form-control"
+                      value={fileOptions[file._id]?.quantity}
+                      onChange={(e) => handleOptionChange(file._id, 'quantity', parseInt(e.target.value, 10) || 0)}
+                      min="0"
                     />
                   </td>
                   {/* <td className="col-md-1 py-3"> {file.buildVolume ? `${Math.round(file.buildVolume)} cm³` : '-'}</td> */}
@@ -407,15 +468,6 @@ const OrderDetails = () => {
                         file.buildVolume
                       )}
                   </td>
-                  {/* <td className="col-md-1 py-3">
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={customPrices[file._id] || 0}
-                      onChange={(e) => handleCustomPriceChange(file._id, e.target.value)}
-                      min="0"
-                    />
-                  </td> */}
                   <td className="col-md-1 py-3">
                     {calculateItemTotal(
                       fileOptions[file._id]?.material,
@@ -432,7 +484,7 @@ const OrderDetails = () => {
           </table>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
