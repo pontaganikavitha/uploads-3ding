@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import FileUploader from '../components/FileUploaderAdding';
 import OrderSummary from '../components/OrderSummary';
