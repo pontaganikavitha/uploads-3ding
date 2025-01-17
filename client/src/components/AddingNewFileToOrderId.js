@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import FileUploader from '../components/FileUploader';
+import FileUploader from '../components/FileUploaderAdding';
 import OrderSummary from '../components/OrderSummary';
 import '../styles/UploadedFiles.css';
 import { v4 as uuidv4 } from 'uuid';
