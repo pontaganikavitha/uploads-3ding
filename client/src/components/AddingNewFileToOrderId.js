@@ -20,7 +20,7 @@ const AddingNewFileToOrderId = () => {
     useEffect(() => {
         const fetchOptionsData = async () => {
             try {
-                const response = await fetch('http://13.236.37.235:3001/options');
+                const response = await fetch('http://3.105.74.12:3001/options');
                 const data = await response.json();
                 setOptionsData(data);
             } catch (error) {
@@ -41,7 +41,7 @@ const AddingNewFileToOrderId = () => {
 
     const fetchOrderDetails = async (orderId) => {
         try {
-            const response = await fetch(`http://13.236.37.235:3001/orders/${orderId}`);
+            const response = await fetch(`http://3.105.74.12:3001/orders/${orderId}`);
             const orderData = await response.json();
 
             const processedFiles = orderData.files.map(file => ({
@@ -183,7 +183,7 @@ const AddingNewFileToOrderId = () => {
                 total,
             };
 
-            const response = await fetch('http://13.236.37.235:3001/submit-order', {
+            const response = await fetch('http://3.105.74.12:3001/submit-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData),
@@ -315,15 +315,7 @@ const AddingNewFileToOrderId = () => {
                                                 ))}
                                             </select>
                                         </td>
-                                        {/* <td className='col-md-1 text-center'>
-                                            ₹ {calculatePrice(
-                                                fileOptions[file._id]?.material || 'PLA',
-                                                fileOptions[file._id]?.density || '20%',
-                                                fileOptions[file._id]?.quality || 'Draft',
-                                                file.buildVolume
-                                            )}
-                                        </td> */}
-                                        <td className='col-md-1 text-center'>
+                                        <td className='col-md-1 text-center'>`  `
                                             ₹ {calculatePrice(
                                                 fileOptions[file._id]?.material || 'PLA',
                                                 fileOptions[file._id]?.density || '20%',
@@ -339,7 +331,6 @@ const AddingNewFileToOrderId = () => {
                                                 min="1"
                                                 value={fileOptions[file._id]?.quantity || 1}
                                                 onChange={e => handleOptionChange(file._id, 'quantity', parseInt(e.target.value))}
-                                                disabled={fileOptions[file._id]?.customPrice}
                                                 className="form-control"
                                             />
                                         </td>
