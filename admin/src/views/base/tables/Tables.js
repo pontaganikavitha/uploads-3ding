@@ -26,7 +26,7 @@ const Tables = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://13.251.225.116:3001/orders');
+      const response = await fetch('http://54.66.86.34:3001/orders');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
