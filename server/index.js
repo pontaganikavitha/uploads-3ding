@@ -28,14 +28,14 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://test1.3ding.in/admin', 'http://test1.3ding.in'], // Update with your client origins
+    origin: ['http://test1.3ding.in:3000', 'http://test1.3ding.in:3002'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://test1.3ding.in/admin', 'http://test1.3ding.in'], // Update with your client origins
+  origin: ['http://test1.3ding.in:3000', 'http://test1.3ding.in:3002'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
