@@ -45,11 +45,32 @@ export default defineConfig(() => {
       ],
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss'],
     },
+    // server: {
+    //   port: 3000,
+    //   proxy: {
+    //     // https://vitejs.dev/config/server-options.html
+    //   },
+    // },
     server: {
       port: 3000,
-      proxy: {
-        // https://vitejs.dev/config/server-options.html
+      host: '0.0.0.0', // Allows access from external sources
+      strictPort: true, // Ensures the server runs on the specified port
+      cors: {
+        origin: ['http://test1.3ding.in', 'http://test1.3ding.in/admin'], // Allow requests from this domain
+        credentials: true,
       },
+      proxy: {
+        // Example: Forward API calls to your backend if needed
+        '/server': {
+          target: 'http://test1.3ding.in', // Update with your server's IP
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+    preview: {
+      port: 4173, // Default preview mode port
+      host: '0.0.0.0',
     },
   }
 })
