@@ -55,6 +55,11 @@ const _nav = [
     items: [
       {
         component: CNavItem,
+        name: 'Tables',
+        to: '/base/tables',
+      },
+      {
+        component: CNavItem,
         name: 'Accordion',
         to: '/base/accordion',
       },
@@ -149,11 +154,6 @@ const _nav = [
         component: CNavItem,
         name: 'Spinners',
         to: '/base/spinners',
-      },
-      {
-        component: CNavItem,
-        name: 'Tables',
-        to: '/base/tables',
       },
       {
         component: CNavItem,
