@@ -56,11 +56,11 @@ export default defineConfig(() => {
       host: '0.0.0.0', // Allows access from external sources
       strictPort: true, // Ensures the server runs on the specified port
       cors: {
-        origin: ['http://test1.3ding.in, http://test1.3ding.in/admin'], // Allow requests from this domain
+        origin: ['http://13.236.153.128, http://13.236.153.128/admin'], // Allow requests from this domain
         credentials: true,
       },
       proxy: {},
-      allowedHosts: ["test1.3ding.in"],
+      allowedHosts: ["13.236.153.128"],
     },
   }
 })

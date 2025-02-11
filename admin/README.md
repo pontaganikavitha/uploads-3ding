@@ -82,18 +82,26 @@ $ yarn install
 ### Basic usage
 
 ```bash
-# dev server with hot reload at http://test1.3ding.in
+# dev server with hot reload at http://
+13.236.153.128
+
 $ npm start
 ```
 
 or
 
 ```bash
-# dev server with hot reload at http://test1.3ding.in
+# dev server with hot reload at http://
+13.236.153.128
+
 $ yarn start
 ```
 
-Navigate to [http://test1.3ding.in](http://test1.3ding.in). The app will automatically reload if you change any of the source files.
+Navigate to [http://
+13.236.153.128
+](http://
+13.236.153.128
+). The app will automatically reload if you change any of the source files.
 
 #### Build
 
