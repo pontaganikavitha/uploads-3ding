@@ -28,14 +28,14 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://13.236.153.128, http://13.236.153.128/admin'], // Update with your client origins
+    origin: ['http://3.27.189.89'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://13.236.153.128, http://13.236.153.128/admin'], // Update with your client origins
+  origin: ['http://3.27.189.89'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
@@ -391,6 +391,7 @@ app.get('/api/generate-presigned-url', async (req, res) => {
  * @desc    Fetch options for technology, material, color, quality, and density
  * @access  Public (Consider securing this endpoint)
  */
+
 app.get('/api/options', async (req, res) => {
   try {
     const optionsData = {

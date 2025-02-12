@@ -19,7 +19,7 @@ const UploadedFiles = () => {
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
-        const response = await fetch('http://13.236.153.128/api/options');
+        const response = await fetch('http://3.27.189.89/api/options');
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -42,7 +42,7 @@ const UploadedFiles = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch(`http://13.236.153.128/api/files/${session}`);
+      const response = await fetch(`http://3.27.189.89/api/files/${session}`);
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -139,7 +139,6 @@ const UploadedFiles = () => {
         return null; // Prevent further execution until data is available
       }
 
-
       // Ensure each file has its necessary options
       const fileOptionsValid = files.every(file => fileOptions[file._id]);
       if (!fileOptionsValid) {
@@ -175,7 +174,7 @@ const UploadedFiles = () => {
 
       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
-      const response = await fetch('http://13.236.153.128/api/submit-order', {
+      const response = await fetch('http://3.27.189.89/api/submit-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

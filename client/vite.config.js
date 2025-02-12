@@ -5,7 +5,7 @@ export default defineConfig({
       host: '0.0.0.0',
       strictPort: true,
       cors: {
-        origin: ['http://13.236.153.128'],
+        origin: ['http://3.27.189.89'],
         credentials: true,
       },
     },
