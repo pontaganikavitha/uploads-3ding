@@ -28,14 +28,14 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://3.27.189.89'], // Update with your client origins
+    origin: ['http://test1.3ding.in'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://3.27.189.89'], // Update with your client origins
+  origin: ['http://test1.3ding.in'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
@@ -217,7 +217,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
  * @desc    Fetch files for a specific session
  * @access  Public (Consider securing this endpoint)
  */
-app.get('/api/files/:session', async (req, res) => {
+app.get('/files/:session', async (req, res) => {
   const { session } = req.params;
 
   try {
@@ -234,7 +234,7 @@ app.get('/api/files/:session', async (req, res) => {
  * @desc    Fetch order details by orderId
  * @access  Public (Consider securing this endpoint)
  */
-app.get('/api/orders/:orderId', async (req, res) => {
+app.get('/orders/:orderId', async (req, res) => {
   const { orderId } = req.params;
 
   try {
@@ -257,7 +257,7 @@ app.get('/api/orders/:orderId', async (req, res) => {
  */
 
 // Submit a new order
-app.post('/api/submit-order', async (req, res) => {
+app.post('/submit-order', async (req, res) => {
   try {
     const { orderId, session, files, subtotal, gst, shippingCharges, total } = req.body;
     const existingOrder = await Order.findOne({ orderId: orderId });
@@ -294,7 +294,7 @@ app.post('/api/submit-order', async (req, res) => {
  * @desc    Fetch all orders
  * @access  Public (Consider securing this endpoint)
  */
-app.get('/api/orders', async (req, res) => {
+app.get('/orders', async (req, res) => {
   try {
     const orders = await Order.find().populate('files');
     res.json(orders);
@@ -310,7 +310,7 @@ app.get('/api/orders', async (req, res) => {
  * @desc    Update order details
  * @access  Public (Consider securing this endpoint)
  */
-app.put('/api/orders/:orderId', async (req, res) => {
+app.put('/orders/:orderId', async (req, res) => {
   const { orderId } = req.params;
   const { files, subtotal, gst, shippingCharges, total } = req.body;
 
@@ -352,7 +352,7 @@ app.put('/api/orders/:orderId', async (req, res) => {
  * @query   operation: 'get' | 'put'
  *          key: string (S3 object key)
  */
-app.get('/api/generate-presigned-url', async (req, res) => {
+app.get('/generate-presigned-url', async (req, res) => {
   const { operation, key } = req.query;
 
   if (!operation || !key) {
@@ -392,7 +392,7 @@ app.get('/api/generate-presigned-url', async (req, res) => {
  * @access  Public (Consider securing this endpoint)
  */
 
-app.get('/api/options', async (req, res) => {
+app.get('/options', async (req, res) => {
   try {
     const optionsData = {
       technologyOptions: {

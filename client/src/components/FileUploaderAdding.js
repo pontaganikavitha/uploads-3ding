@@ -26,7 +26,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         proudlyDisplayPoweredByUppy: false,
         metaFields: [{ id: 'name', name: 'Name', placeholder: 'file name' }],
       })
-      .use(Tus, { endpoint: 'http://3.27.189.89/upload', limit: 6 });
+      .use(Tus, { endpoint: 'https://tusd.tusdemo.net/files/', limit: 6 });
 
     uppy.on('file-added', (file) => {
       if (!orderId) {
@@ -46,7 +46,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         formData.append('orderId', orderId);
 
         try {
-          await fetch('http://3.27.189.89/upload', {
+          await fetch('http://test1.3ding.in/api/upload', {
             method: 'POST',
             body: formData,
           });
