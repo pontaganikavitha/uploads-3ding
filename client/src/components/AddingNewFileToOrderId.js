@@ -20,7 +20,7 @@ const AddingNewFileToOrderId = () => {
     useEffect(() => {
         const fetchOptionsData = async () => {
             try {
-                const response = await fetch('http://test1.3ding.in/api/options');
+                const response = await fetch('http://3.27.161.100/api/options');
                 const data = await response.json();
                 setOptionsData(data);
             } catch (error) {
@@ -41,7 +41,7 @@ const AddingNewFileToOrderId = () => {
 
     const fetchOrderDetails = async (orderId) => {
         try {
-            const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+            const response = await fetch(`http://3.27.161.100/api/orders/${orderId}`);
             const orderData = await response.json();
 
             const processedFiles = orderData.files.map(file => ({
@@ -183,7 +183,7 @@ const AddingNewFileToOrderId = () => {
                 total,
             };
 
-            const response = await fetch('http://test1.3ding.in/api/submit-order', {
+            const response = await fetch('http://3.27.161.100/api/submit-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData),

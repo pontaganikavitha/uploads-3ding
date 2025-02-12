@@ -56,11 +56,11 @@
 //       host: '0.0.0.0', // Allows access from external sources
 //       strictPort: true, // Ensures the server runs on the specified port
 //       cors: {
-//         origin: ['http://test1.3ding.in'], // Allow requests from this domain
+//         origin: ['http://3.27.161.100'], // Allow requests from this domain
 //         credentials: true,
 //       },
 //       proxy: {},
-//       allowedHosts: ["test1.3ding.in"],
+//       allowedHosts: ["3.27.161.100"],
 //     },
 //   }
 // })
@@ -111,11 +111,11 @@ export default defineConfig(() => {
       host: '0.0.0.0', // Allows external access
       strictPort: true, // Ensures it runs on port 3000
       cors: {
-        origin: ['https://test1.3ding.in'], // Use HTTPS
+        origin: ['https://3.27.161.100'], // Use HTTPS
         credentials: true,
       },
       proxy: {},
-      allowedHosts: ['test1.3ding.in'],
+      allowedHosts: ['3.27.161.100'],
     },
   };
 });
