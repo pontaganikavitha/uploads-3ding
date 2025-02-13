@@ -56,11 +56,11 @@
 //       host: '0.0.0.0', // Allows access from external sources
 //       strictPort: true, // Ensures the server runs on the specified port
 //       cors: {
-//         origin: ['http://3.26.98.75'], // Allow requests from this domain
+//         origin: ['http://test1.3ding.in'], // Allow requests from this domain
 //         credentials: true,
 //       },
 //       proxy: {},
-//       allowedHosts: ["3.26.98.75"],
+//       allowedHosts: ["test1.3ding.in"],
 //     },
 //   }
 // })
@@ -72,7 +72,7 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig(() => {
   return {
-    base: '/admin/',  // Important for correct path resolution
+    base: '/admin',  // Important for correct path resolution
     build: {
       outDir: 'build',
     },
@@ -115,11 +115,11 @@ export default defineConfig(() => {
       host: '0.0.0.0', // Allows external access
       strictPort: true, // Ensures it runs on port 3000
       cors: {
-        origin: ['https://3.26.98.75'], // Use HTTPS
+        origin: ['https://test1.3ding.in'], // Use HTTPS
         credentials: true,
       },
       proxy: {},
-      allowedHosts: ['3.26.98.75'],
+      allowedHosts: ['test1.3ding.in'],
     },
   };
 });

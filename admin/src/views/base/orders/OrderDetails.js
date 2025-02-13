@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-const socket = io('http://3.26.98.75/api');
+const socket = io('http://test1.3ding.in/api');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -40,7 +40,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://3.26.98.75/api/orders/${orderId}`);
+      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -56,7 +56,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://3.26.98.75/api/options');
+      const response = await fetch('http://test1.3ding.in/api/options');
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {
@@ -183,7 +183,7 @@ const OrderDetails = () => {
         total,
       };
 
-      const response = await fetch(`http://3.26.98.75/api/orders/${orderId}`, {
+      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
