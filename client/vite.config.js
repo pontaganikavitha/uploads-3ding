@@ -5,7 +5,7 @@
 //       host: '0.0.0.0',
 //       strictPort: true,
 //       cors: {
-//         origin: ['http://3.27.161.100'],
+//         origin: ['http://3.26.98.75'],
 //         credentials: true,
 //       },
 //     },
@@ -21,7 +21,7 @@ export default defineConfig({
     host: '0.0.0.0',
     strictPort: true,
     cors: {
-      origin: ['https://3.27.161.100'], // Use HTTPS in production
+      origin: ['https://3.26.98.75'], // Use HTTPS in production
       credentials: true,
     },
   },

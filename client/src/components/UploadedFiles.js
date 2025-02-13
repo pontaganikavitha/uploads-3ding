@@ -19,7 +19,7 @@ const UploadedFiles = () => {
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
-        const response = await fetch('http://3.27.161.100/api/options');
+        const response = await fetch('http://3.26.98.75/api/options');
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -42,7 +42,7 @@ const UploadedFiles = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch(`http://3.27.161.100/api/files/${session}`);
+      const response = await fetch(`http://3.26.98.75/api/files/${session}`);
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -174,7 +174,7 @@ const UploadedFiles = () => {
 
       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
-      const response = await fetch('http://3.27.161.100/api/submit-order', {
+      const response = await fetch('http://3.26.98.75/api/submit-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

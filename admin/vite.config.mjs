@@ -56,15 +56,19 @@
 //       host: '0.0.0.0', // Allows access from external sources
 //       strictPort: true, // Ensures the server runs on the specified port
 //       cors: {
-//         origin: ['http://3.27.161.100'], // Allow requests from this domain
+//         origin: ['http://3.26.98.75'], // Allow requests from this domain
 //         credentials: true,
 //       },
 //       proxy: {},
-//       allowedHosts: ["3.27.161.100"],
+//       allowedHosts: ["3.26.98.75"],
 //     },
 //   }
 // })
 
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'node:path'
+import autoprefixer from 'autoprefixer'
 
 export default defineConfig(() => {
   return {
@@ -111,11 +115,11 @@ export default defineConfig(() => {
       host: '0.0.0.0', // Allows external access
       strictPort: true, // Ensures it runs on port 3000
       cors: {
-        origin: ['https://3.27.161.100'], // Use HTTPS
+        origin: ['https://3.26.98.75'], // Use HTTPS
         credentials: true,
       },
       proxy: {},
-      allowedHosts: ['3.27.161.100'],
+      allowedHosts: ['3.26.98.75'],
     },
   };
 });
