@@ -315,7 +315,7 @@ const AddingNewFileToOrderId = () => {
                                                 ))}
                                             </select>
                                         </td>
-                                        <td className='col-md-1 text-center'>`  `
+                                        <td className='col-md-1 text-center'>
                                             ₹ {calculatePrice(
                                                 fileOptions[file._id]?.material || 'PLA',
                                                 fileOptions[file._id]?.density || '20%',

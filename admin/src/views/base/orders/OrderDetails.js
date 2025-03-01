@@ -176,11 +176,11 @@ const OrderDetails = () => {
       const updatedOrder = {
         ...order,
         files: updatedFiles,
-        subtotal,
-        gst,
+        subtotal,      
+        gst,    
         // shippingCharges,   // Add shipping charges
-        shippingCharges: customShippingPrice || shippingCharges,
-        total,
+        shippingCharges: customShippingPrice || shippingCharges, 
+        total,           
       };
 
       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
