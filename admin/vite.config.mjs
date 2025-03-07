@@ -8,7 +8,7 @@ export default defineConfig(() => {
     base: '/admin/',  // Important for correct path resolution
     build: {
       outDir: 'build',
-    },
+    }, 
     css: {
       postcss: {
         plugins: [autoprefixer({})],

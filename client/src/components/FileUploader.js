@@ -16,7 +16,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         maxTotalFileSize: null,
         maxNumberOfFiles: null,
         minNumberOfFiles: null,
-        allowedFileTypes: ['.stl', '.step']
+        allowedFileTypes: ['.stl', '.step', '.obj', '.stp']
       }
     })
       .use(Dashboard, {
