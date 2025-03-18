@@ -32,7 +32,7 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<Home />} /> {/* Default route */}
-          <Route path="/upload" element={<UploadedFiles />} />
+          <Route path="/index" element={<UploadedFiles />} />
           {/* <Route path="/upload-with-same-oreder-id" element={<UploadToExistingOrder />} /> */}
           {/* <Route path="/upload-with-same-oreder-id" element={<AddingNewFiles />} /> */}
           <Route path="/upload-with-same-oreder-id" element={<AddingNewFileToOrderId />} />
