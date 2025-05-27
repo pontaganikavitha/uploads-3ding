@@ -1,6 +1,6 @@
 // import React from 'react';
 
-// const OrderSummary = ({ orderId, files, subtotal, gst, shippingCharges }) => {
+// const OrderSummary = ({ orderId, files, subtotal, gst, shippingCharges, leadTime }) => {
 //     return (
 //         <div className="container border-top mt-4">
 //             <table className="table">
@@ -40,7 +40,6 @@
 // };
 
 // export default OrderSummary;
-
 
 import React from 'react';
 

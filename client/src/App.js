@@ -36,8 +36,8 @@ const App = () => {
           {/* <Route path="/upload-with-same-oreder-id" element={<UploadToExistingOrder />} /> */}
           {/* <Route path="/upload-with-same-oreder-id" element={<AddingNewFiles />} /> */}
           <Route path="/upload-with-same-oreder-id" element={<AddingNewFileToOrderId />} />
-          <Route path="/summary" element={<Summary />} />
-          <Route path="/summary/:orderId" element={<OrderDetails />} />
+          <Route path="/summary-test" element={<Summary />} />
+          <Route path="/summary-test/:orderId" element={<OrderDetails />} />
         </Routes>
       </div>
     </Router>
