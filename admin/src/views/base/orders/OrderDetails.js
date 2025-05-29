@@ -2,7 +2,7 @@
 // // // import { useParams } from 'react-router-dom';
 // // // import { io } from 'socket.io-client';
 
-// // // const socket = io('http://test1.3ding.in/api');
+// // // const socket = io('https://test1.3ding.in/api');
 
 // // // const OrderDetails = () => {
 // // //   const { orderId } = useParams();
@@ -38,7 +38,7 @@
 
 // // //   const fetchOrderDetails = async () => {
 // // //     try {
-// // //       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+// // //       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
 // // //       if (!response.ok) {
 // // //         throw new Error(`HTTP error! status: ${response.status}`);
 // // //       }
@@ -54,7 +54,7 @@
 
 // // //   const fetchOptionsData = async () => {
 // // //     try {
-// // //       const response = await fetch('http://test1.3ding.in/api/options');
+// // //       const response = await fetch('https://test1.3ding.in/api/options');
 // // //       const data = await response.json();
 // // //       setOptionsData(data);
 // // //     } catch (error) {
@@ -166,7 +166,7 @@
 // // //         total,             // Add total
 // // //       };
 
-// // //       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+// // //       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
 // // //         method: 'PUT',
 // // //         headers: {
 // // //           'Content-Type': 'application/json',
@@ -469,7 +469,7 @@
 // // // import { useParams } from 'react-router-dom';
 // // // import { io } from 'socket.io-client';
 
-// // // const socket = io('http://test1.3ding.in/api');
+// // // const socket = io('https://test1.3ding.in/api');
 
 // // // const OrderDetails = () => {
 // // //   const { orderId } = useParams();
@@ -507,7 +507,7 @@
 
 // // //   const fetchOrderDetails = async () => {
 // // //     try {
-// // //       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+// // //       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
 // // //       if (!response.ok) {
 // // //         throw new Error(`HTTP error! status: ${response.status}`);
 // // //       }
@@ -523,7 +523,7 @@
 
 // // //   const fetchOptionsData = async () => {
 // // //     try {
-// // //       const response = await fetch('http://test1.3ding.in/api/options');
+// // //       const response = await fetch('https://test1.3ding.in/api/options');
 // // //       const data = await response.json();
 // // //       setOptionsData(data);
 // // //     } catch (error) {
@@ -650,7 +650,7 @@
 // // //         total,           
 // // //       };
 
-// // //       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+// // //       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
 // // //         method: 'PUT',
 // // //         headers: {
 // // //           'Content-Type': 'application/json',
@@ -933,7 +933,7 @@
 // // import { useParams } from 'react-router-dom';
 // // import { io } from 'socket.io-client';
 
-// // const socket = io('http://test1.3ding.in/api');
+// // const socket = io('https://test1.3ding.in/api');
 
 // // const OrderDetails = () => {
 // //   const { orderId } = useParams();
@@ -971,7 +971,7 @@
 
 // //   const fetchOrderDetails = async () => {
 // //     try {
-// //       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+// //       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
 // //       if (!response.ok) {
 // //         throw new Error(`HTTP error! status: ${response.status}`);
 // //       }
@@ -987,7 +987,7 @@
 
 // //   const fetchOptionsData = async () => {
 // //     try {
-// //       const response = await fetch('http://test1.3ding.in/api/options');
+// //       const response = await fetch('https://test1.3ding.in/api/options');
 // //       const data = await response.json();
 // //       setOptionsData(data);
 // //     } catch (error) {
@@ -1114,7 +1114,7 @@
 // //         total,
 // //       };
 
-// //       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+// //       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
 // //         method: 'PUT',
 // //         headers: {
 // //           'Content-Type': 'application/json',
@@ -1216,7 +1216,7 @@
 
 // //   // const handleDownload = async (id, originalName) => {
 // //   //   try {
-// //   //     const response = await fetch(`http://test1.3ding.in/api/download/${id}`);
+// //   //     const response = await fetch(`https://test1.3ding.in/api/download/${id}`);
 // //   //     const blob = await response.blob();
 
 // //   //     const filenameWithoutExtension = originalName.replace(/\.[^/.]+$/, '');
@@ -1238,7 +1238,7 @@
 // //   const handleDownload = async (id) => {
 // //     try {
 // //       // Fetch the download URL from the backend
-// //       const response = await fetch(`http://test1.3ding.in/api/download/${id}`);
+// //       const response = await fetch(`https://test1.3ding.in/api/download/${id}`);
 // //       if (!response.ok) {
 // //         throw new Error("Failed to fetch download link");
 // //       }
@@ -1253,7 +1253,7 @@
 // //   const handleDownloadAll = async (orderId) => {
 // //     try {
 // //       console.log("Downloading ZIP for order:", orderId);
-// //       const response = await fetch(`http://test1.3ding.in/api/download/order/${orderId}`);
+// //       const response = await fetch(`https://test1.3ding.in/api/download/order/${orderId}`);
 
 // //       if (!response.ok) {
 // //         throw new Error("Failed to fetch ZIP file");
@@ -1472,7 +1472,7 @@
 // import { useParams } from 'react-router-dom';
 // import { io } from 'socket.io-client';
 
-// const socket = io('http://test1.3ding.in/api');
+// const socket = io('https://test1.3ding.in/api');
 
 // const OrderDetails = () => {
 //   const { orderId } = useParams();
@@ -1507,7 +1507,7 @@
 
 //   const fetchOrderDetails = async () => {
 //     try {
-//       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+//       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
 //       if (!response.ok) {
 //         throw new Error(`HTTP error! status: ${response.status}`);
 //       }
@@ -1523,7 +1523,7 @@
 
 //   const fetchOptionsData = async () => {
 //     try {
-//       const response = await fetch('http://test1.3ding.in/api/options');
+//       const response = await fetch('https://test1.3ding.in/api/options');
 //       const data = await response.json();
 //       setOptionsData(data);
 //     } catch (error) {
@@ -1646,7 +1646,7 @@
 //         total,
 //       };
 
-//       const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+//       const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
 //         method: 'PUT',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -1740,7 +1740,7 @@
 
 //   const handleDownloadAll = async (orderId) => {
 //     try {
-//       const url = `http://test1.3ding.in/api/download/order/${orderId}`;
+//       const url = `https://test1.3ding.in/api/download/order/${orderId}`;
 //       window.location.href = url;
 //     } catch (error) {
 //       console.error('Error downloading ZIP file:', error);
@@ -1939,7 +1939,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-const socket = io('http://test1.3ding.in/api');
+const socket = io('https://test1.3ding.in/api');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -1976,7 +1976,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -1992,7 +1992,7 @@ const OrderDetails = () => {
 
   // const fetchOptionsData = async () => {
   //   try {
-  //     const response = await fetch('http://test1.3ding.in/api/options');
+  //     const response = await fetch('https://test1.3ding.in/api/options');
   //     const data = await response.json();
   //     setOptionsData(data);
   //   } catch (error) {
@@ -2002,7 +2002,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://test1.3ding.in/api/options');
+      const response = await fetch('https://test1.3ding.in/api/options');
       const data = await response.json();
       setOptionsData(data); // Set the fetched options data
       console.log('Fetched options data:', data); // Debug log
@@ -2154,7 +2154,7 @@ const OrderDetails = () => {
         leadTime: customLeadTime || leadTime, // Use customLeadTime if not 0
       };
 
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -2294,7 +2294,7 @@ const OrderDetails = () => {
 
   // const handleDeleteFile = async (orderId, fileId, fileName) => {
   //   try {
-  //     const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
+  //     const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
   //       method: 'DELETE',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -2316,7 +2316,7 @@ const OrderDetails = () => {
 
   const handleDeleteFile = async (orderId, fileId, fileName) => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -2338,7 +2338,7 @@ const OrderDetails = () => {
   const handleDownload = async (orderId, fileName) => {
     try {
       console.log(`Downloading file: ${fileName} from order: ${orderId}`); // Log the fileName and orderId
-      const response = await fetch(`http://test1.3ding.in/api/download/order/${orderId}/${fileName}`);
+      const response = await fetch(`https://test1.3ding.in/api/download/order/${orderId}/${fileName}`);
       if (!response.ok) {
         throw new Error("Failed to fetch download link");
       }
@@ -2351,7 +2351,7 @@ const OrderDetails = () => {
   const handleDownloadAll = async (orderId) => {
     try {
       console.log("Downloading ZIP for order:", orderId);
-      const response = await fetch(`http://test1.3ding.in/api/download/order/${orderId}`);
+      const response = await fetch(`https://test1.3ding.in/api/download/order/${orderId}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch ZIP file");
