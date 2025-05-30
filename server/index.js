@@ -24,7 +24,6 @@ const jwt = require('jsonwebtoken');
 const archiver = require('archiver'); // For creating ZIP files
 const UPLOADS_DIR = path.join(__dirname, 'uploads'); // Adjust if your upload path is different
 
-const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 
 const User = require('./models/userModel'); // Adjust the path to your user model
@@ -47,6 +46,8 @@ const io = socketIo(server, {
     methods: ['GET', 'POST'],
   },
 });
+
+
 
 //CORS middleware setup
 const corsOptions = {
@@ -72,7 +73,6 @@ app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // Keep COEP for security
   next();
 });
-
 
 
 // Connect to MongoDB without deprecated options
@@ -293,6 +293,26 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 
+// app.put('/allow-user/:email', async (req, res) => {
+//   const { email } = req.params;
+
+//   try {
+//     const user = await User.findOneAndUpdate(
+//       { email },
+//       { allowed: true },
+//       { new: true }
+//     );
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({ message: "User allowed successfully", user });
+//   } catch (err) {
+//     console.error("Error allowing user:", err);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
 
 app.post('/admin/add-user', async (req, res) => {
   const { name, email, role, allowed } = req.body;
@@ -319,6 +339,101 @@ app.post('/admin/add-user', async (req, res) => {
   }
 });
 
+// app.put('/allow-user/:email', async (req, res) => {
+//   const { email } = req.params;
+
+//   try {
+//     const user = await User.findOneAndUpdate(
+//       { email: email.toLowerCase() }, // Normalize email to lowercase
+//       { allowed: true },
+//       { new: true }
+//     );
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({ message: "User allowed successfully", user });
+//   } catch (err) {
+//     console.error("Error allowing user:", err);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
+
+// app.put('/allow-user/:email', async (req, res) => {
+//   const { email } = req.params;
+
+//   try {
+//     const user = await User.findOneAndUpdate(
+//       { email: email.toLowerCase() }, // Normalize email to lowercase
+//       { allowed: true },
+//       { new: true }
+//     );
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     console.log("User allowed status updated:", user); // Debug log
+
+//     res.status(200).json({ message: "User allowed successfully", user });
+//   } catch (err) {
+//     console.error("Error allowing user:", err);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
+
+// app.post('/admin/add-user', async (req, res) => {
+//   const { name, email, role, allowed } = req.body;
+
+//   try {
+//     // Check if the user already exists
+//     const existingUser = await User.findOne({ email: email.toLowerCase() });
+//     if (existingUser) {
+//       return res.status(400).json({ message: 'User already exists' });
+//     }
+
+//     // Create a new user
+//     const newUser = await User.create({
+//       name,
+//       email: email.toLowerCase(), // Normalize email to lowercase
+//       role: role || 'user', // Default role is 'user'
+//       allowed: allowed !== undefined ? allowed : true, // Default is allowed
+//     });
+
+//     res.status(201).json({ message: 'User added successfully', user: newUser });
+//   } catch (err) {
+//     console.error('Error adding user:', err);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
+
+// app.post('/admin/add-user', async (req, res) => {
+//   const { name, email, role, allowed } = req.body;
+
+//   try {
+//     // Check if the user already exists
+//     const existingUser = await User.findOne({ email: email.toLowerCase() });
+//     if (existingUser) {
+//       return res.status(400).json({ message: 'User already exists' });
+//     }
+
+//     // Create a new user
+//     const newUser = await User.create({
+//       name,
+//       email: email.toLowerCase(), // Normalize email to lowercase
+//       role: role || 'user', // Default role is 'user'
+//       allowed: allowed !== undefined ? allowed : true, // Default is allowed
+//     });
+
+//     console.log("New user added:", newUser); // Debug log
+
+//     res.status(201).json({ message: 'User added successfully', user: newUser });
+//   } catch (err) {
+//     console.error('Error adding user:', err);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
 
 app.get('/download/order/:orderId', async (req, res) => {
   const { orderId } = req.params;
@@ -553,8 +668,87 @@ app.get('/generate-presigned-url', async (req, res) => {
   }
 });
 
+// const UserSchema = new mongoose.Schema({
+//   email: { type: String, required: true, unique: true },
+//   password: { type: String, required: true },
+//   role: { type: String, enum: ['admin', 'user'], default: 'user' },
+//   lastLogin: { type: Date } // ✅ Store last login timestamp
+// });
+
+// const User = mongoose.model('User', UserSchema);
+
+// Middleware for authentication
+// const authMiddleware = async (req, res, next) => {
+//   const token = req.header('Authorization');
+//   if (!token) return res.status(401).json({ message: 'Access denied' });
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = decoded;
+//     next();
+//   } catch (err) {
+//     res.status(400).json({ message: 'Invalid token' });
+//   }
+// };
+
+// app.get('/users', authMiddleware, async (req, res) => {
+//   try {
+//     if (req.user.role !== 'admin') {
+//       return res.status(403).json({ message: 'Access denied' });
+//     }
+
+//     const users = await User.find({}, 'email role lastLogin'); // ✅ Include lastLogin
+
+//     res.json(users);
+//   } catch (error) {
+//     console.error('Error fetching users:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 
+// Create a new user (Admin only)
+// app.post('/users', authMiddleware, async (req, res) => {
+//   if (req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
+
+//   const { email, password, role } = req.body;
+//   const existingUser = await User.findOne({ email });
+//   if (existingUser) return res.status(400).json({ message: 'User already exists' });
+
+//   const hashedPassword = await bcrypt.hash(password, 10);
+//   const newUser = new User({ email, password: hashedPassword, role });
+//   await newUser.save();
+//   res.json({ message: 'User created' });
+// });
+
+// Delete user (Admin only)
+// app.delete('/users/:id', authMiddleware, async (req, res) => {
+//   if (req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
+
+//   const user = await User.findById(req.params.id);
+//   if (!user) return res.status(404).json({ message: 'User not found' });
+//   if (user.role === 'admin') return res.status(403).json({ message: 'Cannot delete an admin user' });
+
+//   await User.findByIdAndDelete(req.params.id);
+//   res.json({ message: 'User deleted' });
+// });
+
+// app.put('/users/:id', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { role } = req.body;
+
+//     const updatedUser = await User.findByIdAndUpdate(id, { role }, { new: true });
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.json(updatedUser);
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
 // Global error-handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
@@ -699,7 +893,89 @@ app.delete('/orders/:orderId/files/:fileId', async (req, res) => {
  * @desc    Fetch options for technology, material, color, quality, and density
  * @access  Public (Consider securing this endpoint)
  */
-
+// app.get('/options', async (req, res) => {
+//   try {
+//     const optionsData = {
+//       technologyOptions: {
+//         SLS: {
+//           material: ['Nylon 2200'],
+//           color: ['Default'],
+//           quality: ['Default'],
+//           density: ['Default'],
+//         },
+//         SLA: {
+//           material: ['ABS', 'Clear Resin', 'Translucent'],
+//           color: ['White'],
+//           quality: ['Default'],
+//           density: ['Default'],
+//         },
+//         MJF: {
+//           material: ['Nylon PA12'],
+//           color: ['Grey'],
+//           quality: ['Default'],
+//           density: ['Default'],
+//         },
+//         DLP: {
+//           material: ['Green Castable Resin'],
+//           color: ['Green'],
+//           quality: ['Default'],
+//           density: ['Default'],
+//         },
+//         MJP: {
+//           material: ['White/Clear Resin'],
+//           color: ['White/Clear'],
+//           quality: ['Default'],
+//           density: ['Default'],
+//         },
+//         PJP: {
+//           material: ['Clear Resin', 'Agilus 30'],
+//           color: ['Clear'],
+//           quality: ['Default'],
+//           density: ['Default'],
+//         },
+//         'FDM/FFF': {
+//           material: ['PLA', 'ABS', 'HIPS', 'Flexible', 'PET G', 'Copper', 'Brass', 'Wood', 'Marble'],
+//           color: ['White', 'Black', 'Red', 'Grey', 'Green', 'Natural', 'Yellow'],
+//           quality: ['Draft', 'High', 'Standard'],
+//           density: ['20%', '30%', '50%', '100%'],
+//         },
+//       },
+//       materialCosts: {
+//         PLA: 2,
+//         ABS: 3,
+//         HIPS: 4,
+//         Flexible: 5,
+//         'PET G': 6,
+//         Copper: 7,
+//         Brass: 3,
+//         Wood: 5,
+//         Marble: 4,
+//         'Clear Resin': 8,
+//         Translucent: 6,
+//         'Nylon PA12': 9,
+//         'Green Castable Resin': 5,
+//         'White/Clear': 5,
+//         'Clear Resin': 6,
+//         'Agilus 30': 3,
+//       },
+//       densityCosts: {
+//         '20%': 2,
+//         '30%': 3,
+//         '50%': 4,
+//         '100%': 5,
+//       },
+//       qualityCosts: {
+//         Draft: 2,
+//         Standard: 3,
+//         High: 4,
+//       },
+//     };
+//     res.json(optionsData);
+//   } catch (err) {
+//     console.error('Error fetching options data:', err);
+//     res.status(500).send('Error fetching options data');
+//   }
+// });
 
 
 // Define the Options Schema
@@ -718,7 +994,53 @@ const Options = mongoose.model('Options', optionsSchema);
  * @desc    Fetch options for technology, material, color, quality, and density
  * @access  Public
  */
+// app.get('/options', async (req, res) => {
+//   try {
+//     const options = await Options.findOne(); // Fetch the first document
+//     if (!options) {
+//       return res.status(404).json({ message: 'Options not found' });
+//     }
+//     res.json(options);
+//   } catch (err) {
+//     console.error('Error fetching options:', err);
+//     res.status(500).send('Error fetching options');
+//   }
+// });
 
+// app.get('/options', async (req, res) => {
+//   try {
+//     const options = await Options.findOne(); // Fetch options from the database
+//     if (!options) {
+//       return res.status(404).json({ message: 'Options not found' });
+//     }
+
+//     // Filter out disabled technologies, materials, colors, etc.
+//     const filteredOptions = {
+//       technologyOptions: Object.fromEntries(
+//         Object.entries(options.technologyOptions)
+//           .filter(([key, value]) => value.enabled) // Only include enabled technologies
+//           .map(([key, value]) => [
+//             key,
+//             {
+//               ...value,
+//               material: value.material.filter((m) => m.enabled), // Filter enabled materials
+//               color: value.color.filter((c) => c.enabled), // Filter enabled colors
+//               quality: value.quality.filter((q) => q.enabled), // Filter enabled qualities
+//               density: value.density.filter((d) => d.enabled), // Filter enabled densities
+//             },
+//           ])
+//       ),
+//       materialCosts: options.materialCosts,
+//       densityCosts: options.densityCosts,
+//       qualityCosts: options.qualityCosts,
+//     };
+
+//     res.json(filteredOptions);
+//   } catch (err) {
+//     console.error('Error fetching options:', err);
+//     res.status(500).send('Error fetching options');
+//   }
+// });
 
 app.get('/options', async (req, res) => {
   try {
