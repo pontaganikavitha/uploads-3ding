@@ -19,7 +19,7 @@ const UploadedFiles = () => {
   // useEffect(() => {
   //   const fetchOptionsData = async () => {
   //     try {
-  //       const response = await fetch('http://test1.3ding.in/api/options');
+  //       const response = await fetch('https://test1.3ding.in/api/options');
   //       const data = await response.json();
   //       setOptionsData(data);
   //     } catch (error) {
@@ -43,7 +43,7 @@ const UploadedFiles = () => {
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
-        const response = await fetch('http://test1.3ding.in/api/options');
+        const response = await fetch('https://test1.3ding.in/api/options');
         const data = await response.json();
         setOptionsData(data); // Set the fetched options data
         console.log('Fetched options data:', data); // Debug log
@@ -77,7 +77,7 @@ const UploadedFiles = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/files/${session}`);
+      const response = await fetch(`https://test1.3ding.in/api/files/${session}`);
       const data = await response.json();
       setFiles(data);
     } catch (error) {
@@ -301,7 +301,7 @@ const UploadedFiles = () => {
 
       console.log('Submitting order:', JSON.stringify(orderData, null, 2));
 
-      const response = await fetch('http://test1.3ding.in/api/submit-order', {
+      const response = await fetch('https://test1.3ding.in/api/submit-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

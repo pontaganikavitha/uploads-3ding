@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { debounce } from 'lodash';
 import '../styles/UploadedFiles.css';
 
-const socket = io('http://test1.3ding.in/api');
+const socket = io('https://test1.3ding.in/api');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -38,7 +38,7 @@ const OrderDetails = () => {
 
   const debouncedUpdateOrder = useCallback(debounce(async (updatedOrder) => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -115,7 +115,7 @@ const OrderDetails = () => {
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://test1.3ding.in/api/options');
+      const response = await fetch('https://test1.3ding.in/api/options');
       const data = await response.json();
       setOptionsData(data);
     } catch (error) {

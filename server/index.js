@@ -42,7 +42,7 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://test1.3ding.in', 'http://test1.3ding.in/admin'], // Update with your client origins
+    origin: ['https://test1.3ding.in', 'https://test1.3ding.in/admin'], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
@@ -51,7 +51,7 @@ const io = socketIo(server, {
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://test1.3ding.in', 'http://test1.3ding.in/admin'], // Update with your client origins
+  origin: ['https://test1.3ding.in', 'https://test1.3ding.in/admin'], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
@@ -61,13 +61,14 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")))
 
-const authRoutes = require('./routes/authRoutes');
+// const authRoutes = require('./routes/authRoutes');
 // app.use((req, res, next) => {
 //   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
 //   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
 //   next();
 // });
 
+const authRoutes = require('./routes/authRoutes');
 app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups'); // Allow popups to interact with the parent window
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // Keep COEP for security

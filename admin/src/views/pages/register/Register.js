@@ -35,7 +35,7 @@ const AdminAddUser = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://test1.3ding.in/api/admin/add-user', formData);
+      const response = await axios.post('https://test1.3ding.in/api/admin/add-user', formData);
       setMessage(response.data.message);
       setFormData({ name: '', email: '', role: 'user', allowed: false }); // Reset form
     } catch (err) {

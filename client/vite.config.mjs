@@ -21,7 +21,7 @@ export default defineConfig({
     host: '0.0.0.0',
     strictPort: true,
     cors: {
-      origin: ['http://test1.3ding.in'], // Use HTTPS in production
+      origin: ['https://test1.3ding.in'], // Use HTTPS in production
       credentials: true,
     },
   },
