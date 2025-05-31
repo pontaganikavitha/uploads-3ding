@@ -16,6 +16,29 @@ const UploadedFiles = () => {
     qualityCosts: {}
   });
 
+  // useEffect(() => {
+  //   const fetchOptionsData = async () => {
+  //     try {
+  //       const response = await fetch('https://test1.3ding.in/api/options');
+  //       const data = await response.json();
+  //       setOptionsData(data);
+  //     } catch (error) {
+  //       console.error('Error fetching options data:', error);
+  //     }
+  //   };
+
+  //   fetchOptionsData();
+
+  //   const sessionIdentifier = Math.random().toString(36).substring(7);
+  //   setSession(sessionIdentifier);
+
+  //   const generateOrderId = () => {
+  //     const timestamp = Date.now();
+  //     return `${timestamp}`;
+  //   };
+  //   const orderId = generateOrderId();
+  //   setOrderId(orderId);
+  // }, []);
 
   useEffect(() => {
     const fetchOptionsData = async () => {
@@ -72,6 +95,49 @@ const UploadedFiles = () => {
     }
   }, [session, orderId]);
 
+  // useEffect(() => {
+  //   const updateFileOptions = () => {
+  //     const defaultFileOptions = { ...fileOptions };
+  //     files.forEach(file => {
+  //       if (!defaultFileOptions[file._id]) {
+  //         defaultFileOptions[file._id] = {
+  //           technology: 'FDM/FFF',
+  //           material: optionsData.technologyOptions['FDM/FFF']?.material?.[0] || '',
+  //           color: optionsData.technologyOptions['FDM/FFF']?.color?.[0] || '',
+  //           quality: optionsData.technologyOptions['FDM/FFF']?.quality?.[0] || '',
+  //           density: optionsData.technologyOptions['FDM/FFF']?.density?.[0] || '',
+  //           quantity: 1
+  //         };
+  //       }
+  //     });
+  //     setFileOptions(defaultFileOptions);
+  //   };
+
+  //   if (files.length > 0 && Object.keys(optionsData.technologyOptions).length > 0) {
+  //     updateFileOptions();
+  //   }
+  // }, [files, optionsData]);
+
+  // const handleOptionChange = (fileId, optionType, value) => {
+  //   setFileOptions(prevState => {
+  //     const updatedOptions = { ...prevState[fileId], [optionType]: value };
+
+  //     if (optionType === 'technology') {
+  //       const newTechnologyOptions = optionsData.technologyOptions[value];
+  //       updatedOptions.material = newTechnologyOptions.material[0] || '';
+  //       updatedOptions.color = newTechnologyOptions.color[0] || '';
+  //       updatedOptions.quality = newTechnologyOptions.quality[0] || '';
+  //       updatedOptions.density = newTechnologyOptions.density[0] || '';
+  //     }
+
+  //     return {
+  //       ...prevState,
+  //       [fileId]: updatedOptions
+  //     };
+  //   });
+
+  //   handleSubmitOrder();
+  // };
 
   useEffect(() => {
     const updateFileOptions = () => {
@@ -116,6 +182,14 @@ const UploadedFiles = () => {
       };
     });
   };
+
+  // const calculatePrice = (material, density, quality, buildVolume) => {
+  //   const materialCost = optionsData.materialCosts[material] || 0;
+  //   const densityCost = optionsData.densityCosts[density] || 0;
+  //   const qualityCost = optionsData.qualityCosts[quality] || 0;
+  //   const totalPrice = (materialCost + densityCost + qualityCost) * buildVolume;
+  //   return Math.round(totalPrice);
+  // };
   const calculatePrice = (material, density, quality, buildVolume) => {
     console.log('Calculating price with:', { material, density, quality, buildVolume });
 
@@ -127,11 +201,26 @@ const UploadedFiles = () => {
     return Math.round(totalPrice);
   };
 
+  // const calculateItemTotal = (material, density, quality, buildVolume, quantity) => {
+  //   const price = calculatePrice(material, density, quality, buildVolume);
+  //   return price * quantity;
+  // };
 
   const calculateItemTotal = (material, density, quality, buildVolume, quantity) => {
     const price = calculatePrice(material, density, quality, buildVolume);
     return price * (quantity || 1);
   };
+
+  // const subtotal = files.reduce((acc, file) => {
+  //   const orderTotal = calculateItemTotal(
+  //     fileOptions[file._id]?.material || 'PLA',
+  //     fileOptions[file._id]?.density || '20%',
+  //     fileOptions[file._id]?.quality || 'Draft',
+  //     file.buildVolume,
+  //     fileOptions[file._id]?.quantity || 1
+  //   );
+  //   return acc + orderTotal;
+  // }, 0);
 
   const subtotal = files.reduce((acc, file) => {
     const orderTotal = calculateItemTotal(
@@ -148,7 +237,9 @@ const UploadedFiles = () => {
   const shippingCharges = subtotal === 0 ? 0 : subtotal < 300 ? 50 : 0;
   const total = subtotal + gst + shippingCharges;
 
-
+  // const gst = Math.round(subtotal * 0.18);
+  // const shippingCharges = subtotal === 0 ? 0 : subtotal < 300 ? 50 : 0;
+  // const total = subtotal + gst + shippingCharges;
   const leadTime = (() => {
     if (total >= 10000) {
       return "10 Days";
@@ -283,6 +374,17 @@ const UploadedFiles = () => {
                   <td className='py-2 text-center'>{index + 1}</td>
                   <td className="py-2 text-start">{file.originalName}<br />{file.dimensions ? `${Math.round(file.dimensions.length)} x ${Math.round(file.dimensions.width)} x ${Math.round(file.dimensions.height)} mm` : '-'}</td>
                   <td>
+                    {/* <select
+                      className="technology-select"
+                      value={fileOptions[file._id]?.technology || ''}
+                      onChange={e => handleOptionChange(file._id, 'technology', e.target.value)}
+                    >
+                      {Object.keys(optionsData.technologyOptions).map(technology => (
+                        <option key={technology} value={technology}>
+                          {technology}
+                        </option>
+                      ))}
+                    </select> */}
                     <select
                       className="technology-select"
                       value={fileOptions[file._id]?.technology || ''}
@@ -297,6 +399,17 @@ const UploadedFiles = () => {
                     </select>
                   </td>
                   <td>
+                    {/* <select
+                      className="technology-select"
+                      value={fileOptions[file._id]?.material || ''}
+                      onChange={e => handleOptionChange(file._id, 'material', e.target.value)}
+                    >
+                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.material.map(material => (
+                        <option key={material} value={material}>
+                          {material}
+                        </option>
+                      ))}
+                    </select> */}
                     <select
                       className="technology-select"
                       value={fileOptions[file._id]?.material || ''}
@@ -308,6 +421,17 @@ const UploadedFiles = () => {
                     </select>
                   </td>
                   <td>
+                    {/* <select
+                      className="technology-select"
+                      value={fileOptions[file._id]?.color || ''}
+                      onChange={e => handleOptionChange(file._id, 'color', e.target.value)}
+                    >
+                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.color.map(color => (
+                        <option key={color} value={color}>
+                          {color}
+                        </option>
+                      ))}
+                    </select> */}
                     <select
                       className="technology-select"
                       value={fileOptions[file._id]?.color || ''}
@@ -319,6 +443,17 @@ const UploadedFiles = () => {
                     </select>
                   </td>
                   <td>
+                    {/* <select
+                      className="technology-select"
+                      value={fileOptions[file._id]?.quality || ''}
+                      onChange={e => handleOptionChange(file._id, 'quality', e.target.value)}
+                    >
+                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.quality.map(quality => (
+                        <option key={quality} value={quality}>
+                          {quality}
+                        </option>
+                      ))}
+                    </select> */}
                     <select
                       className="technology-select"
                       value={fileOptions[file._id]?.quality || ''}
@@ -330,6 +465,17 @@ const UploadedFiles = () => {
                     </select>
                   </td>
                   <td>
+                    {/* <select
+                      className="technology-select"
+                      value={fileOptions[file._id]?.density || ''}
+                      onChange={e => handleOptionChange(file._id, 'density', e.target.value)}
+                    >
+                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.density.map(density => (
+                        <option key={density} value={density}>
+                          {density}
+                        </option>
+                      ))}
+                    </select> */}
                     <select
                       className="technology-select"
                       value={fileOptions[file._id]?.density || ''}
@@ -343,13 +489,20 @@ const UploadedFiles = () => {
                   <td className='col-md-1 text-center'>
                     ₹{calculatePrice(fileOptions[file._id]?.material || 'PLA', fileOptions[file._id]?.density || '20%', fileOptions[file._id]?.quality || 'Draft', file.buildVolume)}
                   </td>
-                  <td><input
-                    type="number"
-                    className="technology-select"
-                    value={fileOptions[file._id]?.quantity}
-                    onChange={(e) => handleOptionChange(file._id, 'quantity', parseInt(e.target.value, 10) || 0)}
-                    min="0"
-                  />
+                  <td>
+                    {/* <input
+                      className="technology-select"
+                      type="number"
+                      value={fileOptions[file._id]?.quantity || 1}
+                      onChange={e => handleOptionChange(file._id, 'quantity', e.target.value)}
+                    /> */}
+                    <input
+                      type="number"
+                      className="technology-select"
+                      value={fileOptions[file._id]?.quantity}
+                      onChange={(e) => handleOptionChange(file._id, 'quantity', parseInt(e.target.value, 10) || 0)}
+                      min="0"
+                    />
                   </td>
                   <td className='py-2'>
                     ₹{calculateItemTotal(
