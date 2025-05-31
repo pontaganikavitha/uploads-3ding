@@ -171,7 +171,7 @@ export default defineConfig(() => {
       host: '0.0.0.0', // Allows external access
       strictPort: true, // Ensures it runs on port 3000
       cors: {
-        origin: ['http://test1.3ding.in'], // Use HTTPS
+        origin: ['https://test1.3ding.in'], // Use HTTPS
         credentials: true,
       },
       proxy: {},
