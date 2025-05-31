@@ -20,7 +20,7 @@ const AddingNewFileToOrderId = () => {
   useEffect(() => {
     const fetchOptionsData = async () => {
       try {
-        const response = await fetch('https://test1.3ding.in/api/options');
+        const response = await fetch('http://test1.3ding.in/api/options');
         const data = await response.json();
         setOptionsData(data);
       } catch (error) {
@@ -40,7 +40,7 @@ const AddingNewFileToOrderId = () => {
 
   const fetchOrderDetails = async (orderId) => {
     try {
-      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
+      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
       const orderData = await response.json();
 
       const processedFiles = orderData.files.map((file) => ({
@@ -212,7 +212,7 @@ const AddingNewFileToOrderId = () => {
         leadTime,
       };
 
-      const response = await fetch('https://test1.3ding.in/api/submit-order', {
+      const response = await fetch('http://test1.3ding.in/api/submit-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
