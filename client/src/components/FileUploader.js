@@ -53,7 +53,7 @@ const FileUploader = ({ session, orderId, onComplete }) => {
         formData.append('orderId', orderId);
 
         try {
-          const response = await fetch('https://test1.3ding.in/api/upload', {
+          const response = await fetch('http://test1.3ding.in/api/upload', {
             method: 'POST',
             body: formData,
           });
