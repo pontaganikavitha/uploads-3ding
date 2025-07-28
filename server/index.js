@@ -1,5 +1,4 @@
 // server.js
-
 require('dotenv').config(); // Load environment variables from .env
 
 const express = require('express');
@@ -42,7 +41,7 @@ const server = http.createServer(app);
 // Configure Socket.IO (if real-time updates are needed)
 const io = socketIo(server, {
   cors: {
-    origin: ['http://test1.3ding.in', 'http://test1.3ding.in/admin'], // Update with your client origins
+    origin: [process.env.CLIENT_URL, process.env.ADMIN_URL], // Update with your client origins
     methods: ['GET', 'POST'],
   },
 });
@@ -51,7 +50,7 @@ const io = socketIo(server, {
 
 //CORS middleware setup
 const corsOptions = {
-  origin: ['http://test1.3ding.in', 'http://test1.3ding.in/admin'], // Update with your client origins
+  origin: [process.env.CLIENT_URL, process.env.ADMIN_URL], // Update with your client origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
@@ -61,20 +60,18 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")))
 
-// const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./api/routes/authRoutes');
 // app.use((req, res, next) => {
 //   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
 //   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
 //   next();
 // });
 
-const authRoutes = require('./routes/authRoutes');
 app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups'); // Allow popups to interact with the parent window
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // Keep COEP for security
   next();
 });
-
 
 // Connect to MongoDB without deprecated options
 mongoose
@@ -110,6 +107,7 @@ const orderSchema = new mongoose.Schema({
   shippingCharges: { type: Number, required: true },
   total: { type: Number, required: true },
   leadTime: { type: String, required: true },
+  couponDiscount: { type: Number, default: 0 }, // Add couponDiscount field
 });
 
 const Order = mongoose.model('Order', orderSchema);
@@ -156,7 +154,7 @@ io.on('connection', (socket) => {
  * @access  Public (Consider securing this endpoint)
  */
 
-app.post('/upload', upload.single('file'), async (req, res) => {
+app.post('/api/upload', upload.single('file'), async (req, res) => {
   const { session, orderId, originalName } = req.body;
 
   console.log('Received upload request:', { session, orderId, originalName });
@@ -294,28 +292,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 
-// app.put('/allow-user/:email', async (req, res) => {
-//   const { email } = req.params;
-
-//   try {
-//     const user = await User.findOneAndUpdate(
-//       { email },
-//       { allowed: true },
-//       { new: true }
-//     );
-
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res.status(200).json({ message: "User allowed successfully", user });
-//   } catch (err) {
-//     console.error("Error allowing user:", err);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
-
-app.post('/admin/add-user', async (req, res) => {
+app.post('/api/admin/add-user', async (req, res) => {
   const { name, email, role, allowed } = req.body;
 
   try {
@@ -340,103 +317,7 @@ app.post('/admin/add-user', async (req, res) => {
   }
 });
 
-// app.put('/allow-user/:email', async (req, res) => {
-//   const { email } = req.params;
-
-//   try {
-//     const user = await User.findOneAndUpdate(
-//       { email: email.toLowerCase() }, // Normalize email to lowercase
-//       { allowed: true },
-//       { new: true }
-//     );
-
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res.status(200).json({ message: "User allowed successfully", user });
-//   } catch (err) {
-//     console.error("Error allowing user:", err);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
-
-// app.put('/allow-user/:email', async (req, res) => {
-//   const { email } = req.params;
-
-//   try {
-//     const user = await User.findOneAndUpdate(
-//       { email: email.toLowerCase() }, // Normalize email to lowercase
-//       { allowed: true },
-//       { new: true }
-//     );
-
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     console.log("User allowed status updated:", user); // Debug log
-
-//     res.status(200).json({ message: "User allowed successfully", user });
-//   } catch (err) {
-//     console.error("Error allowing user:", err);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
-
-// app.post('/admin/add-user', async (req, res) => {
-//   const { name, email, role, allowed } = req.body;
-
-//   try {
-//     // Check if the user already exists
-//     const existingUser = await User.findOne({ email: email.toLowerCase() });
-//     if (existingUser) {
-//       return res.status(400).json({ message: 'User already exists' });
-//     }
-
-//     // Create a new user
-//     const newUser = await User.create({
-//       name,
-//       email: email.toLowerCase(), // Normalize email to lowercase
-//       role: role || 'user', // Default role is 'user'
-//       allowed: allowed !== undefined ? allowed : true, // Default is allowed
-//     });
-
-//     res.status(201).json({ message: 'User added successfully', user: newUser });
-//   } catch (err) {
-//     console.error('Error adding user:', err);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// });
-
-// app.post('/admin/add-user', async (req, res) => {
-//   const { name, email, role, allowed } = req.body;
-
-//   try {
-//     // Check if the user already exists
-//     const existingUser = await User.findOne({ email: email.toLowerCase() });
-//     if (existingUser) {
-//       return res.status(400).json({ message: 'User already exists' });
-//     }
-
-//     // Create a new user
-//     const newUser = await User.create({
-//       name,
-//       email: email.toLowerCase(), // Normalize email to lowercase
-//       role: role || 'user', // Default role is 'user'
-//       allowed: allowed !== undefined ? allowed : true, // Default is allowed
-//     });
-
-//     console.log("New user added:", newUser); // Debug log
-
-//     res.status(201).json({ message: 'User added successfully', user: newUser });
-//   } catch (err) {
-//     console.error('Error adding user:', err);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// });
-
-app.get('/download/order/:orderId', async (req, res) => {
+app.get('/api/download/order/:orderId', async (req, res) => {
   const { orderId } = req.params;
 
   try {
@@ -475,7 +356,7 @@ app.get('/download/order/:orderId', async (req, res) => {
 });
 
 // Updated download route
-app.get('/download/:id', async (req, res) => {
+app.get('/api/download/:id', async (req, res) => {
   try {
     const file = await File.findById(req.params.id);
     if (!file) {
@@ -493,13 +374,99 @@ app.get('/download/:id', async (req, res) => {
   }
 });
 
+// Define the Coupon Schema
+const couponSchema = new mongoose.Schema({
+  code: { type: String, required: true, unique: true },
+  discount: { type: Number, required: true },
+  expiryDate: { type: Date, required: true },
+});
 
+// Create the Coupon Model
+const Coupon = mongoose.model('Coupon', couponSchema);
+
+// Add a new coupon
+app.post('/api/coupons', async (req, res) => {
+  const { code, discount, expiryDate } = req.body;
+
+  if (!code || !discount || !expiryDate) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    const newCoupon = new Coupon({ code, discount, expiryDate });
+    await newCoupon.save();
+    res.status(201).json(newCoupon);
+  } catch (error) {
+    console.error('Error adding coupon:', error);
+    if (error.code === 11000) {
+      res.status(400).json({ message: 'Coupon code already exists' });
+    } else {
+      res.status(500).json({ message: 'Failed to add coupon' });
+    }
+  }
+});
+
+// Get all coupons
+app.get('/api/coupons', async (req, res) => {
+  try {
+    const coupons = await Coupon.find();
+    res.status(200).json(coupons);
+  } catch (error) {
+    console.error('Error fetching coupons:', error);
+    res.status(500).json({ message: 'Failed to fetch coupons' });
+  }
+});
+
+// Delete a coupon
+app.delete('/api/coupons/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedCoupon = await Coupon.findByIdAndDelete(id);
+    if (!deletedCoupon) {
+      return res.status(404).json({ message: 'Coupon not found' });
+    }
+    res.status(200).json({ message: 'Coupon deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting coupon:', error);
+    res.status(500).json({ message: 'Failed to delete coupon' });
+  }
+});
+// Validate a coupon
+app.post('/api/coupons/validate', async (req, res) => {
+  const { code } = req.body;
+
+  if (!code) {
+    return res.status(400).json({ message: 'Coupon code is required' });
+  }
+
+  try {
+    // Find the coupon in the database (case-insensitive)
+    const coupon = await Coupon.findOne({ code: { $regex: new RegExp(`^${code}$`, 'i') } });
+
+    if (!coupon) {
+      return res.status(404).json({ message: 'Invalid coupon code' });
+    }
+
+    // Check if the coupon is expired
+    const currentDate = new Date();
+    if (new Date(coupon.expiryDate) < currentDate) {
+      return res.status(400).json({ message: 'Coupon has expired' });
+    }
+
+    // Return the discount percentage
+    res.status(200).json({ discount: coupon.discount });
+  } catch (error) {
+    console.error('Error validating coupon:', error);
+    res.status(500).json({ message: 'Failed to validate coupon' });
+  }
+});
 /**
  * @route   GET /files/:session
  * @desc    Fetch files for a specific session
  * @access  Public (Consider securing this endpoint)
  */
-app.get('/files/:session', async (req, res) => {
+app.get('/api/files/:session', async (req, res) => {
   const { session } = req.params;
 
   try {
@@ -516,7 +483,7 @@ app.get('/files/:session', async (req, res) => {
  * @desc    Fetch order details by orderId
  * @access  Public (Consider securing this endpoint)
  */
-app.get('/orders/:orderId', async (req, res) => {
+app.get('/api/orders/:orderId', async (req, res) => {
   const { orderId } = req.params;
 
   try {
@@ -538,45 +505,59 @@ app.get('/orders/:orderId', async (req, res) => {
  * @access  Public (Consider securing this endpoint)
  */
 
-// Submit a new order
-app.post('/submit-order', async (req, res) => {
+app.post('/api/submit-order', async (req, res) => {
   try {
-    const { orderId, session, files, subtotal, gst, shippingCharges, total, leadTime } = req.body;
+    const { orderId, session, files, subtotal, gst, shippingCharges, total, leadTime, couponDiscount } = req.body;
     const existingOrder = await Order.findOne({ orderId: orderId });
 
-    console.log('Received submit order request:', { orderId, session, files, subtotal, gst, shippingCharges, total, leadTime });
+    console.log('Received submit order request:', { orderId, session, files, subtotal, gst, shippingCharges, total, leadTime, couponDiscount });
 
     if (!orderId || !session) {
       return res.status(400).send('Missing orderId or session');
     }
 
     if (existingOrder) {
+      // Update existing order
       existingOrder.files = files;
       existingOrder.subtotal = subtotal;
       existingOrder.gst = gst;
       existingOrder.shippingCharges = shippingCharges;
       existingOrder.total = total;
       existingOrder.leadTime = leadTime;
+      existingOrder.couponDiscount = couponDiscount; // Add couponDiscount to the existing order
       await existingOrder.save();
     } else {
-      const newOrder = new Order({ orderId, session, files, subtotal, gst, shippingCharges, total, leadTime });
+      // Create a new order
+      const newOrder = new Order({
+        orderId,
+        session,
+        files,
+        subtotal,
+        gst,
+        shippingCharges,
+        total,
+        leadTime,
+        couponDiscount, // Add couponDiscount to the new order
+      });
       await newOrder.save();
     }
+
     // Emit a real-time event (optional)
-    io.emit('orderSubmitted', { orderId: existingOrder.orderId, order: existingOrder });
+    io.emit('orderSubmitted', { orderId, order: existingOrder || newOrder });
+
     res.status(201).send('Order submitted successfully');
   } catch (error) {
+    console.error('Error submitting order:', error);
     res.status(500).send('Error submitting order: ' + error.message);
   }
 });
-
 
 /**
  * @route   GET /orders
  * @desc    Fetch all orders
  * @access  Public (Consider securing this endpoint)
  */
-app.get('/orders', async (req, res) => {
+app.get('/api/orders', async (req, res) => {
   try {
     const orders = await Order.find().populate('files');
     res.json(orders);
@@ -592,7 +573,7 @@ app.get('/orders', async (req, res) => {
  * @desc    Update order details
  * @access  Public (Consider securing this endpoint)
  */
-app.put('/orders/:orderId', async (req, res) => {
+app.put('/api/orders/:orderId', async (req, res) => {
   const { orderId } = req.params;
   const { files, subtotal, gst, shippingCharges, total, leadTime } = req.body;
 
@@ -627,7 +608,6 @@ app.put('/orders/:orderId', async (req, res) => {
   }
 });
 
-
 /**
  * @route   GET /generate-presigned-url
  * @desc    Generate a pre-signed URL for uploading or downloading a file
@@ -635,7 +615,7 @@ app.put('/orders/:orderId', async (req, res) => {
  * @query   operation: 'get' | 'put'
  *          key: string (S3 object key)
  */
-app.get('/generate-presigned-url', async (req, res) => {
+app.get('/api/generate-presigned-url', async (req, res) => {
   const { operation, key } = req.query;
 
   if (!operation || !key) {
@@ -669,87 +649,7 @@ app.get('/generate-presigned-url', async (req, res) => {
   }
 });
 
-// const UserSchema = new mongoose.Schema({
-//   email: { type: String, required: true, unique: true },
-//   password: { type: String, required: true },
-//   role: { type: String, enum: ['admin', 'user'], default: 'user' },
-//   lastLogin: { type: Date } // ✅ Store last login timestamp
-// });
 
-// const User = mongoose.model('User', UserSchema);
-
-// Middleware for authentication
-// const authMiddleware = async (req, res, next) => {
-//   const token = req.header('Authorization');
-//   if (!token) return res.status(401).json({ message: 'Access denied' });
-
-//   try {
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     req.user = decoded;
-//     next();
-//   } catch (err) {
-//     res.status(400).json({ message: 'Invalid token' });
-//   }
-// };
-
-// app.get('/users', authMiddleware, async (req, res) => {
-//   try {
-//     if (req.user.role !== 'admin') {
-//       return res.status(403).json({ message: 'Access denied' });
-//     }
-
-//     const users = await User.find({}, 'email role lastLogin'); // ✅ Include lastLogin
-
-//     res.json(users);
-//   } catch (error) {
-//     console.error('Error fetching users:', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
-
-// Create a new user (Admin only)
-// app.post('/users', authMiddleware, async (req, res) => {
-//   if (req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
-
-//   const { email, password, role } = req.body;
-//   const existingUser = await User.findOne({ email });
-//   if (existingUser) return res.status(400).json({ message: 'User already exists' });
-
-//   const hashedPassword = await bcrypt.hash(password, 10);
-//   const newUser = new User({ email, password: hashedPassword, role });
-//   await newUser.save();
-//   res.json({ message: 'User created' });
-// });
-
-// Delete user (Admin only)
-// app.delete('/users/:id', authMiddleware, async (req, res) => {
-//   if (req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
-
-//   const user = await User.findById(req.params.id);
-//   if (!user) return res.status(404).json({ message: 'User not found' });
-//   if (user.role === 'admin') return res.status(403).json({ message: 'Cannot delete an admin user' });
-
-//   await User.findByIdAndDelete(req.params.id);
-//   res.json({ message: 'User deleted' });
-// });
-
-// app.put('/users/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { role } = req.body;
-
-//     const updatedUser = await User.findByIdAndUpdate(id, { role }, { new: true });
-
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res.json(updatedUser);
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
 // Global error-handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
@@ -768,12 +668,11 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.use('/auth/', authRoutes); // <- NEW LINE
-
+app.use('/api/auth/', authRoutes); // <- NEW LINE
 
 
 // New route to download an individual file from an order
-app.get('/download/order/:orderId/:fileName', async (req, res) => {
+app.get('/api/download/order/:orderId/:fileName', async (req, res) => {
   try {
     const { orderId, fileName } = req.params;
 
@@ -802,7 +701,7 @@ app.get('/download/order/:orderId/:fileName', async (req, res) => {
 });
 
 
-app.get('/download/order/:orderId', async (req, res) => {
+app.get('/api/download/order/:orderId', async (req, res) => {
   const { orderId } = req.params;
 
   try {
@@ -844,7 +743,7 @@ const { DeleteObjectCommand } = require('@aws-sdk/client-s3'); // Import S3 dele
 
 const { ObjectId } = mongoose.Types; // Import ObjectId from Mongoose
 
-app.delete('/orders/:orderId/files/:fileId', async (req, res) => {
+app.delete('/api/orders/:orderId/files/:fileId', async (req, res) => {
   const { orderId, fileId } = req.params;
   const { fileName } = req.body;
 
@@ -894,90 +793,6 @@ app.delete('/orders/:orderId/files/:fileId', async (req, res) => {
  * @desc    Fetch options for technology, material, color, quality, and density
  * @access  Public (Consider securing this endpoint)
  */
-// app.get('/options', async (req, res) => {
-//   try {
-//     const optionsData = {
-//       technologyOptions: {
-//         SLS: {
-//           material: ['Nylon 2200'],
-//           color: ['Default'],
-//           quality: ['Default'],
-//           density: ['Default'],
-//         },
-//         SLA: {
-//           material: ['ABS', 'Clear Resin', 'Translucent'],
-//           color: ['White'],
-//           quality: ['Default'],
-//           density: ['Default'],
-//         },
-//         MJF: {
-//           material: ['Nylon PA12'],
-//           color: ['Grey'],
-//           quality: ['Default'],
-//           density: ['Default'],
-//         },
-//         DLP: {
-//           material: ['Green Castable Resin'],
-//           color: ['Green'],
-//           quality: ['Default'],
-//           density: ['Default'],
-//         },
-//         MJP: {
-//           material: ['White/Clear Resin'],
-//           color: ['White/Clear'],
-//           quality: ['Default'],
-//           density: ['Default'],
-//         },
-//         PJP: {
-//           material: ['Clear Resin', 'Agilus 30'],
-//           color: ['Clear'],
-//           quality: ['Default'],
-//           density: ['Default'],
-//         },
-//         'FDM/FFF': {
-//           material: ['PLA', 'ABS', 'HIPS', 'Flexible', 'PET G', 'Copper', 'Brass', 'Wood', 'Marble'],
-//           color: ['White', 'Black', 'Red', 'Grey', 'Green', 'Natural', 'Yellow'],
-//           quality: ['Draft', 'High', 'Standard'],
-//           density: ['20%', '30%', '50%', '100%'],
-//         },
-//       },
-//       materialCosts: {
-//         PLA: 2,
-//         ABS: 3,
-//         HIPS: 4,
-//         Flexible: 5,
-//         'PET G': 6,
-//         Copper: 7,
-//         Brass: 3,
-//         Wood: 5,
-//         Marble: 4,
-//         'Clear Resin': 8,
-//         Translucent: 6,
-//         'Nylon PA12': 9,
-//         'Green Castable Resin': 5,
-//         'White/Clear': 5,
-//         'Clear Resin': 6,
-//         'Agilus 30': 3,
-//       },
-//       densityCosts: {
-//         '20%': 2,
-//         '30%': 3,
-//         '50%': 4,
-//         '100%': 5,
-//       },
-//       qualityCosts: {
-//         Draft: 2,
-//         Standard: 3,
-//         High: 4,
-//       },
-//     };
-//     res.json(optionsData);
-//   } catch (err) {
-//     console.error('Error fetching options data:', err);
-//     res.status(500).send('Error fetching options data');
-//   }
-// });
-
 
 // Define the Options Schema
 const optionsSchema = new mongoose.Schema({
@@ -995,55 +810,8 @@ const Options = mongoose.model('Options', optionsSchema);
  * @desc    Fetch options for technology, material, color, quality, and density
  * @access  Public
  */
-// app.get('/options', async (req, res) => {
-//   try {
-//     const options = await Options.findOne(); // Fetch the first document
-//     if (!options) {
-//       return res.status(404).json({ message: 'Options not found' });
-//     }
-//     res.json(options);
-//   } catch (err) {
-//     console.error('Error fetching options:', err);
-//     res.status(500).send('Error fetching options');
-//   }
-// });
 
-// app.get('/options', async (req, res) => {
-//   try {
-//     const options = await Options.findOne(); // Fetch options from the database
-//     if (!options) {
-//       return res.status(404).json({ message: 'Options not found' });
-//     }
-
-//     // Filter out disabled technologies, materials, colors, etc.
-//     const filteredOptions = {
-//       technologyOptions: Object.fromEntries(
-//         Object.entries(options.technologyOptions)
-//           .filter(([key, value]) => value.enabled) // Only include enabled technologies
-//           .map(([key, value]) => [
-//             key,
-//             {
-//               ...value,
-//               material: value.material.filter((m) => m.enabled), // Filter enabled materials
-//               color: value.color.filter((c) => c.enabled), // Filter enabled colors
-//               quality: value.quality.filter((q) => q.enabled), // Filter enabled qualities
-//               density: value.density.filter((d) => d.enabled), // Filter enabled densities
-//             },
-//           ])
-//       ),
-//       materialCosts: options.materialCosts,
-//       densityCosts: options.densityCosts,
-//       qualityCosts: options.qualityCosts,
-//     };
-
-//     res.json(filteredOptions);
-//   } catch (err) {
-//     console.error('Error fetching options:', err);
-//     res.status(500).send('Error fetching options');
-//   }
-// });
-
-app.get('/options', async (req, res) => {
+app.get('/api/options', async (req, res) => {
   try {
     const options = await Options.findOne(); // Fetch options from the database
 
@@ -1065,7 +833,6 @@ app.get('/options', async (req, res) => {
     res.status(500).send('Error fetching options');
   }
 });
-
 
 const host = "0.0.0.0";
 const port = process.env.port || 3001;

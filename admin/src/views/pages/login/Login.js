@@ -28,7 +28,7 @@ const Login = ({ setIsAuthenticated }) => {
         localStorage.setItem("user-info", JSON.stringify({ email, name, image, token }));
 
         setIsAuthenticated(true);
-        navigate("/");
+        navigate("/base/tables");
       } else {
         throw new Error("Google login failed. No auth code received.");
       }

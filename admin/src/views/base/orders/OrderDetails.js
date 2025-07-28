@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-const socket = io('http://test1.3ding.in/api');
+const socket = io('https://test1.3ding.in/api');
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -20,6 +20,7 @@ const OrderDetails = () => {
   const [customShippingPrice, setCustomShippingPrice] = useState(0);
   const [customLeadTime, setCustomLeadTime] = useState(0);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false); // State for success alert
+  const [couponDiscount, setCouponDiscount] = useState(0); // State for coupon discount
 
   useEffect(() => {
     fetchOrderDetails();
@@ -39,13 +40,14 @@ const OrderDetails = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`);
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       setOrder(data);
       initializeFileOptions(data);
+      setCouponDiscount(data.couponDiscount || 0); // Set coupon discount from order data
     } catch (error) {
       setError(error.message);
     } finally {
@@ -53,19 +55,10 @@ const OrderDetails = () => {
     }
   };
 
-  // const fetchOptionsData = async () => {
-  //   try {
-  //     const response = await fetch('http://test1.3ding.in/api/options');
-  //     const data = await response.json();
-  //     setOptionsData(data);
-  //   } catch (error) {
-  //     console.error('Error fetching options data:', error);
-  //   }
-  // };
 
   const fetchOptionsData = async () => {
     try {
-      const response = await fetch('http://test1.3ding.in/api/options');
+      const response = await fetch('https://test1.3ding.in/api/options');
       const data = await response.json();
       setOptionsData(data); // Set the fetched options data
       console.log('Fetched options data:', data); // Debug log
@@ -115,23 +108,6 @@ const OrderDetails = () => {
       return updatedFileOptions;
     });
   };
-
-  // const handleOptionChange = (fileId, optionType, value) => {
-  //   setFileOptions((prevState) => {
-  //     const updatedOptions = { ...prevState[fileId], [optionType]: value };
-
-  //     if (optionType === 'technology') {
-  //       const newTechnologyOptions = optionsData.technologyOptions[value];
-  //       updatedOptions.material = newTechnologyOptions.material[0] || '';
-  //       updatedOptions.color = newTechnologyOptions.color[0] || '';
-  //       updatedOptions.quality = newTechnologyOptions.quality[0] || '';
-  //       updatedOptions.density = newTechnologyOptions.density[0] || '';
-  //     }
-
-  //     return { ...prevState, [fileId]: updatedOptions };
-  //   });
-  //   updateAllItemTotals(); // Recalculate all item totals
-  // };
 
   const handleOptionChange = (fileId, optionType, value) => {
     setFileOptions((prevState) => {
@@ -215,9 +191,10 @@ const OrderDetails = () => {
         shippingCharges: customShippingPrice || shippingCharges,
         total,
         leadTime: customLeadTime || leadTime, // Use customLeadTime if not 0
+        couponDiscount, // Include coupon discount in the updated order
       };
 
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}`, {
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -239,14 +216,6 @@ const OrderDetails = () => {
     }
   };
 
-  // const calculatePrice = (material, density, quality, buildVolume) => {
-  //   const materialCost = optionsData.materialCosts[material] || 0;
-  //   const densityCost = optionsData.densityCosts[density] || 0;
-  //   const qualityCost = optionsData.qualityCosts[quality] || 0;
-  //   const totalPrice = (materialCost + densityCost + qualityCost) * buildVolume;
-  //   return Math.round(totalPrice);
-  // };
-
   const calculatePrice = (material, density, quality, buildVolume) => {
     console.log('Calculating price with:', { material, density, quality, buildVolume });
 
@@ -258,26 +227,7 @@ const OrderDetails = () => {
     return Math.round(totalPrice);
   };
 
-  // const calculateItemTotal = (
-  //   material,
-  //   density,
-  //   quality,
-  //   buildVolume,
-  //   quantity,
-  //   customPrice = 0
-  // ) => {
-  //   const materialCost = optionsData.materialCosts[material] || 0;
-  //   const densityCost = optionsData.densityCosts[density] || 0;
-  //   const qualityCost = optionsData.qualityCosts[quality] || 0;
-
-  //   if (customPrice !== 0) {
-  //     return Math.round(customPrice * (quantity || 0)); // Use 0 if quantity is 0
-  //   } else {
-  //     const totalPrice = (materialCost + densityCost + qualityCost) * buildVolume;
-  //     return Math.round(totalPrice * (quantity || 0)); // Use 0 if quantity is 0
-  //   }
-  // };
-
+  
   const calculateItemTotal = (material, density, quality, buildVolume, quantity, customPrice = 0) => {
     const materialCost = optionsData.materialCosts[material] || 0;
     const densityCost = optionsData.densityCosts[density] || 0;
@@ -291,23 +241,6 @@ const OrderDetails = () => {
     }
   };
 
-  // const calculateSubtotal = () => {
-  //   return order.files.reduce((acc, file) => {
-  //     const quantity = fileOptions[file._id]?.quantity ?? 1; // Use 0 if explicitly set
-  //     const fileTotal =
-  //       quantity > 0
-  //         ? calculateItemTotal(
-  //           fileOptions[file._id]?.material || 'PLA',
-  //           fileOptions[file._id]?.density || '20%',
-  //           fileOptions[file._id]?.quality || 'Draft',
-  //           file.buildVolume,
-  //           quantity,
-  //           customPrices[file._id] || 0
-  //         )
-  //         : 0; // Skip adding to subtotal if quantity is 0
-  //     return acc + fileTotal;
-  //   }, 0);
-  // };
 
   const calculateSubtotal = () => {
     return order.files.reduce((acc, file) => {
@@ -331,9 +264,11 @@ const OrderDetails = () => {
     return Math.round(subtotal * 0.18);
   };
 
+
   const calculateTotal = (subtotal, gst, shippingCharges) => {
     const effectiveShippingCharges = customShippingPrice !== 0 ? customShippingPrice : shippingCharges;
-    return subtotal + gst + effectiveShippingCharges;
+    const discountAmount = (subtotal * couponDiscount) / 100; // Calculate discount
+    return subtotal - discountAmount + gst + effectiveShippingCharges;
   };
 
   if (loading) {
@@ -351,35 +286,12 @@ const OrderDetails = () => {
   const subtotal = calculateSubtotal();
   const gst = calculateGST(subtotal);
   const shippingCharges = order.shippingCharges || 0;
-  const total = calculateTotal(subtotal, gst, shippingCharges);
-  const leadTime = order.leadTime || 0;
+  const total = calculateTotal(subtotal, gst, shippingCharges); const leadTime = order.leadTime || 0;
 
-
-  // const handleDeleteFile = async (orderId, fileId, fileName) => {
-  //   try {
-  //     const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ fileName }), // Send the file name to delete from S3
-  //     });
-
-  //     if (response.ok) {
-  //       console.log('File deleted successfully');
-  //       // Refresh the order details after deletion
-  //       fetchOrderDetails();
-  //     } else {
-  //       console.error('Error deleting file');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error deleting file:', error);
-  //   }
-  // };
 
   const handleDeleteFile = async (orderId, fileId, fileName) => {
     try {
-      const response = await fetch(`http://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
+      const response = await fetch(`https://test1.3ding.in/api/orders/${orderId}/files/${fileId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -401,7 +313,7 @@ const OrderDetails = () => {
   const handleDownload = async (orderId, fileName) => {
     try {
       console.log(`Downloading file: ${fileName} from order: ${orderId}`); // Log the fileName and orderId
-      const response = await fetch(`http://test1.3ding.in/api/download/order/${orderId}/${fileName}`);
+      const response = await fetch(`https://test1.3ding.in/api/download/order/${orderId}/${fileName}`);
       if (!response.ok) {
         throw new Error("Failed to fetch download link");
       }
@@ -414,7 +326,7 @@ const OrderDetails = () => {
   const handleDownloadAll = async (orderId) => {
     try {
       console.log("Downloading ZIP for order:", orderId);
-      const response = await fetch(`http://test1.3ding.in/api/download/order/${orderId}`);
+      const response = await fetch(`https://test1.3ding.in/api/download/order/${orderId}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch ZIP file");
@@ -451,8 +363,9 @@ const OrderDetails = () => {
             <span className=''><strong>Subtotal:</strong> {subtotal}</span>
             <span className='mx-4'><strong>Total:</strong> {total}</span>
             <span className='mx-4'><strong>GST:</strong> {gst}</span>
+            <span className="mx-4"><strong>Discount:</strong> {couponDiscount}%</span>
             <span className='mx-4'><strong>Lead Time:</strong> {`${leadTime} Days`}</span>
-            <span className='mx-4'><strong>Shipping Charges:</strong> {shippingCharges}</span>
+            <span className='mx-4'><strong>Shipp Chrg:</strong> {shippingCharges}</span>
             <button className="btn btn-primary mx-4" onClick={() => handleDownloadAll(orderId)}>Download All Files</button>
           </p>
         </div>
@@ -467,16 +380,6 @@ const OrderDetails = () => {
               onChange={(e) => setCustomShippingPrice(parseFloat(e.target.value) || 0)}
             />
           </div>
-          {/* <div className="mb-3 m-5 col-md-2">
-          <label htmlFor="customLeadTime" className="fw-bold form-label">Custom Lead Time (Days)</label>
-          <input
-            type="number"
-            id="customLeadTime"
-            className="form-control"
-            value={customLeadTime}
-            onChange={(e) => setCustomLeadTime(parseInt(e.target.value) || 0)}
-          />
-        </div> */}
           <div className="mb-3 m-5 col-md-2">
             <label htmlFor="customLeadTime" className="fw-bold form-label">Custom Lead Time</label>
             <div className="input-group">
@@ -524,19 +427,6 @@ const OrderDetails = () => {
                     </a>
                   </td>
                   <td>
-                    {/* <select
-                      className="form-select"
-                      value={fileOptions[file._id]?.technology || ''}
-                      onChange={(e) =>
-                        handleOptionChange(file._id, 'technology', e.target.value)
-                      }
-                    >
-                      {Object.keys(optionsData.technologyOptions).map((technology) => (
-                        <option key={technology} value={technology}>
-                          {technology}
-                        </option>
-                      ))}
-                    </select> */}
                     <select
                       className="form-select"
                       value={fileOptions[file._id]?.technology || ''}
@@ -551,21 +441,6 @@ const OrderDetails = () => {
                     </select>
                   </td>
                   <td>
-                    {/* <select
-                      className="form-select"
-                      value={fileOptions[file._id]?.material || ''}
-                      onChange={(e) =>
-                        handleOptionChange(file._id, 'material', e.target.value)
-                      }
-                    >
-                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.material.map(
-                        (material) => (
-                          <option key={material} value={material}>
-                            {material}
-                          </option>
-                        )
-                      )}
-                    </select> */}
                     <select
                       className="form-select"
                       value={fileOptions[file._id]?.material || ''}
@@ -577,21 +452,6 @@ const OrderDetails = () => {
                     </select>
                   </td>
                   <td>
-                    {/* <select
-                      className="form-select"
-                      value={fileOptions[file._id]?.color || ''}
-                      onChange={(e) =>
-                        handleOptionChange(file._id, 'color', e.target.value)
-                      }
-                    >
-                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.color.map(
-                        (color) => (
-                          <option key={color} value={color}>
-                            {color}
-                          </option>
-                        )
-                      )}
-                    </select> */}
                     <select
                       className="form-select"
                       value={fileOptions[file._id]?.color || ''}
@@ -603,19 +463,6 @@ const OrderDetails = () => {
                     </select>
                   </td>
                   <td>
-                    {/* <select
-                      className="form-select"
-                      value={fileOptions[file._id]?.quality || ''}
-                      onChange={(e) => handleOptionChange(file._id, 'quality', e.target.value)}
-                    >
-                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.quality.map(
-                        (quality) => (
-                          <option key={quality} value={quality}>
-                            {quality}
-                          </option>
-                        )
-                      )}
-                    </select> */}
                     <select
                       className="form-select"
                       value={fileOptions[file._id]?.quality || ''}
@@ -627,19 +474,6 @@ const OrderDetails = () => {
                     </select>
                   </td>
                   <td>
-                    {/* <select
-                      className="form-select"
-                      value={fileOptions[file._id]?.density || ''}
-                      onChange={(e) => handleOptionChange(file._id, 'density', e.target.value)}
-                    >
-                      {optionsData.technologyOptions[fileOptions[file._id]?.technology]?.density.map(
-                        (density) => (
-                          <option key={density} value={density}>
-                            {density}
-                          </option>
-                        )
-                      )}
-                    </select> */}
                     <select
                       className="form-select"
                       value={fileOptions[file._id]?.density || ''}

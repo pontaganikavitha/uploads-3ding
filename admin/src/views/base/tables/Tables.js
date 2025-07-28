@@ -1,4 +1,3 @@
-// src/views/base/tables/Tables.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -26,7 +25,7 @@ const Tables = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://test1.3ding.in/api/orders');
+      const response = await fetch('https://test1.3ding.in/api/orders');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -67,6 +66,7 @@ const Tables = () => {
                   <CTableHeaderCell>Subtotal</CTableHeaderCell>
                   <CTableHeaderCell>GST</CTableHeaderCell>
                   <CTableHeaderCell>Shipping Charges</CTableHeaderCell>
+                  <CTableHeaderCell>Coupon Discount</CTableHeaderCell>
                   <CTableHeaderCell>Total</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -74,13 +74,15 @@ const Tables = () => {
                 {orders.map((order) => (
                   <CTableRow key={order._id}>
                     <CTableDataCell>
-                      {/* <Link to={`/base/orders/${order._id}`}>{order.orderId}</Link> */}
                       <Link to={`/base/orders/${order.orderId}`}>{order.orderId}</Link>
                     </CTableDataCell>
                     <CTableDataCell>{order.session}</CTableDataCell>
                     <CTableDataCell>{order.subtotal}</CTableDataCell>
                     <CTableDataCell>{order.gst}</CTableDataCell>
                     <CTableDataCell>{order.shippingCharges}</CTableDataCell>
+                    <CTableDataCell>
+                      {order.couponDiscount ? `${order.couponDiscount}%` : '0'}
+                    </CTableDataCell>
                     <CTableDataCell>{order.total}</CTableDataCell>
                   </CTableRow>
                 ))}
@@ -94,4 +96,3 @@ const Tables = () => {
 };
 
 export default Tables;
-

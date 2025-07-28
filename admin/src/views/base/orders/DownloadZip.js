@@ -7,7 +7,7 @@ const DownloadZip = ({ orderId }) => {
 
         try {
             const response = await axios.get(
-                `http://test1.3ding.in/api/download-zip/${orderId}`,
+                `https://test1.3ding.in/api/download-zip/${orderId}`,
                 { responseType: "blob" }
             );
 
